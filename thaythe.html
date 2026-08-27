@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Mật Thư Thay Thế | CIPHER_CORE</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+    <link rel="shortcut icon" href="BIN KỸ NĂNG-01.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="output.css" rel="stylesheet">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { 
+            background: rgba(31, 31, 39, 0.92); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            padding: 0.65rem !important;
+            border-radius: 0.5rem !important;
+        }
+        @media (min-width: 768px) {
+            .glass-card { 
+                background: rgba(31, 31, 39, 0.6); 
+                backdrop-filter: blur(12px); 
+                padding: 1.5rem !important; 
+                border-radius: 0.75rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        .cipher-glow:focus-within { border-bottom-color: #00f2ff; box-shadow: 0 4px 12px -4px rgba(0, 242, 255, 0.3); }
+        .menu-open aside { transform: translateX(0) !important; }
+        .logo-glow-card { box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); border: 2px solid rgba(0, 242, 255, 0.6); }
+        .letter-scroll::-webkit-scrollbar { display: none; }
+        .letter-scroll { scrollbar-width: none; }
+        .letter-item.selected {
+            background-color: #00f2ff !important;
+            color: #13131b !important;
+            font-weight: 900;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+    </style>
+    <script src="nav.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" id="menuOverlay"></div>
+
+    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
+        <div class="px-6 flex flex-col items-center w-full">
+            <div class="w-full aspect-square rounded-3xl bg-white p-4 logo-glow-card flex items-center justify-center overflow-hidden mb-5 transition-all hover:scale-[1.03]">
+                <img src="BIN KỸ NĂNG-01.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="material-symbols-outlined text-background text-6xl hidden">token</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="index.html">
+                <span class="material-symbols-outlined">subtitles</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Morse Code</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="semaphore.html">
+                <span class="material-symbols-outlined">sign_language</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Semaphore</span>
+            </a>
+            <a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 transition-all" href="thaythe.html">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span class="font-label-md text-xs uppercase tracking-widest font-bold">Thay thế</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="camranh.html">
+                <span class="material-symbols-outlined">grid_on</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Dời chỗ</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="md:pl-64 pt-1 md:pt-6 min-h-screen w-full">
+        <div class="px-1 md:px-8 py-1 md:py-8 max-w-container-max mx-auto flex flex-col gap-1.5 md:gap-6">
+            
+            <header class="mb-1 md:mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <button class="material-symbols-outlined block md:hidden text-primary transition-colors active:scale-95 text-2xl md:text-3xl" id="menuToggle">menu</button>
+                        <h1 class="font-display-lg text-lg md:text-5xl font-bold text-primary tracking-wide">MẬT THƯ THAY THẾ</h1>
+                    </div>
+                </div>
+            </header>
+
+            <div id="subnav-container" data-category="thaythe"></div>
+
+            <div id="replacementModule" class="flex flex-col lg:grid lg:grid-cols-12 gap-1.5 md:gap-6">
+                
+                <section class="order-1 lg:order-2 lg:col-span-4 flex flex-col gap-1.5 md:gap-6">
+                    <div id="replacementControls" class="glass-card flex flex-col gap-2 md:gap-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">tune</span> CẤU HÌNH
+                            </h2>
+                            <button id="btnClear" class="text-error/70 hover:text-error flex items-center gap-1 text-[10px] md:text-[11px] font-bold uppercase tracking-widest active:scale-95 transition-all">
+                                <span class="material-symbols-outlined text-xs font-bold">delete_sweep</span>
+                                <span class="hidden sm:inline">XÓA TRẮNG</span>
+                                <span class="inline sm:hidden">CLEAR</span>
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] md:text-xs font-label-md text-on-surface-variant font-bold uppercase tracking-wider">BẢNG CHỮ CÁI KHOÁ</label>
+                            <div class="flex bg-black/30 border border-white/10 rounded-lg p-0.5 gap-1">
+                                <button class="flex-1 py-1 text-[10px] md:text-xs font-bold rounded-md transition-all bg-primary text-background" id="langEN">26 Chữ (EN)</button>
+                                <button class="flex-1 py-1 text-[10px] md:text-xs font-bold rounded-md transition-all text-on-surface-variant hover:text-white" id="langVN">29 Chữ (VN)</button>
+                            </div>
+                        </div>
+
+                        <div class="flex bg-black/30 border border-white/10 rounded-lg p-0.5 gap-1">
+                            <button class="flex-1 py-1 md:py-1.5 text-[10px] md:text-xs font-bold rounded-md transition-all" id="modeAlpha">Chữ Thay Chữ</button>
+                            <button class="flex-1 py-1 md:py-1.5 text-[10px] md:text-xs font-bold rounded-md transition-all" id="modeNum">Số Thay Chữ</button>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5 md:gap-3 mt-1">
+                            <div class="text-center text-[10px] md:text-xs font-label-md text-on-surface-variant font-bold uppercase tracking-wider">THIẾT LẬP KHÓA</div>
+                            
+                            <div class="flex items-center justify-center gap-3 bg-black/20 p-2 md:p-4 rounded-lg md:rounded-xl border border-white/5">
+                                <input type="text" id="findBase" class="w-11 md:w-16 h-10 md:h-14 bg-surface-container-highest border border-primary/40 rounded-lg text-center font-bold text-base md:text-xl text-primary focus:ring-1 focus:ring-primary outline-none uppercase" placeholder="G" maxlength="1">
+                                <span class="font-black text-lg md:text-2xl text-primary">=</span>
+                                <input type="text" id="findCoded" class="w-11 md:w-16 h-10 md:h-14 bg-surface-container-highest border border-primary/40 rounded-lg text-center font-bold text-base md:text-xl text-primary focus:ring-1 focus:ring-primary outline-none uppercase" placeholder="M" maxlength="2">
+                            </div>
+
+                            <div class="space-y-2 mt-1">
+                                <div class="letter-scroll flex overflow-x-auto gap-1 pb-1" id="scrollBase"></div>
+                                <div class="letter-scroll flex overflow-x-auto gap-1 pb-1" id="scrollCoded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="order-2 lg:order-1 lg:col-span-8 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col relative">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">keyboard</span> VĂN BẢN CẦN GIẢI / MÃ
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewRaw">XEM GỐC</button>
+                        </div>
+                        <textarea class="w-full bg-transparent border-none border-b border-outline-variant focus:ring-0 focus:border-primary text-sm md:text-xl text-on-surface py-1 cipher-glow h-14 md:min-h-[100px] resize-none font-medium" id="inputText" placeholder="Nhập nội dung mật thư..." autocomplete="off" spellcheck="false"></textarea>
+                    </div>
+
+                    <div class="glass-card flex flex-col">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">lock_open</span> BẢN DỊCH XUÔI (GIẢI MÃ)
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewForward">XEM</button>
+                        </div>
+                        <div class="p-2 md:p-4 bg-black/40 border border-white/5 rounded-lg font-mono-data text-sm md:text-xl text-primary font-bold tracking-wider overflow-hidden text-ellipsis whitespace-nowrap" id="outputForward">-</div>
+                    </div>
+
+                    <div class="glass-card flex flex-col">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-error flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">enhanced_encryption</span> BẢN DỊCH NGƯỢC (MÃ HÓA)
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-error" id="btnViewBackward">XEM</button>
+                        </div>
+                        <div class="p-2 md:p-4 bg-black/40 border border-white/5 rounded-lg font-mono-data text-sm md:text-xl text-error font-bold tracking-wider overflow-hidden text-ellipsis whitespace-nowrap" id="outputBackward">-</div>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <div class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md transition-all duration-300" id="infoModal">
+        <div class="bg-surface-container-high border border-primary/30 rounded-2xl w-full max-w-2xl p-6 flex flex-col shadow-2xl">
+            <div class="flex-1 max-h-[60vh] overflow-y-auto text-on-background text-xl md:text-2xl font-mono-data p-4 md:p-6 break-all leading-loose tracking-widest bg-black/30 rounded-xl text-center" id="modalBody"></div>
+            <button class="w-full mt-4 bg-primary text-background font-bold p-3 rounded-xl hover:brightness-110 active:scale-95 transition-all text-sm uppercase tracking-widest font-bold" id="btnClose">ĐÓNG WINDOWS</button>
+        </div>
+    </div>
+
+    <script>
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuToggle = document.getElementById('menuToggle');
+
+        menuToggle.onclick = (e) => { document.body.classList.add('menu-open'); menuOverlay.classList.remove('hidden'); e.stopPropagation(); }
+        menuOverlay.onclick = () => { document.body.classList.remove('menu-open'); menuOverlay.classList.add('hidden'); }
+
+        const input = document.getElementById('inputText');
+        const outputF = document.getElementById('outputForward');
+        const outputB = document.getElementById('outputBackward');
+        const findBase = document.getElementById('findBase');
+        const findCoded = document.getElementById('findCoded');
+        const scrollBase = document.getElementById('scrollBase');
+        const scrollCoded = document.getElementById('scrollCoded');
+        const modeAlpha = document.getElementById('modeAlpha');
+        const modeNum = document.getElementById('modeNum');
+        const langEN = document.getElementById('langEN');
+        const langVN = document.getElementById('langVN');
+
+        let currentKey = 0;
+        let currentMode = 'alpha'; 
+        let currentLang = 'EN';
+
+        const alphabetEN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        const alphabetVN = ["A", "Ă", "Â", "B", "C", "D", "Đ", "E", "Ê", "G", "H", "I", "K", "L", "M", "N", "O", "Ô", "Ơ", "P", "Q", "R", "S", "T", "U", "Ư", "V", "X", "Y"];
+
+        function getActiveAlphabet() {
+            return currentLang === 'VN' ? alphabetVN : alphabetEN;
+        }
+
+        function renderPickers() {
+            scrollBase.innerHTML = ''; scrollCoded.innerHTML = '';
+            const activeAlpha = getActiveAlphabet();
+            
+            activeAlpha.forEach(char => {
+                const bItem = document.createElement('div');
+                bItem.className = 'letter-item flex-shrink-0 w-7 h-7 md:w-9 md:h-9 bg-white/5 border border-white/10 rounded-md md:rounded-lg flex items-center justify-center font-bold text-[10px] md:text-xs cursor-pointer transition-all hover:bg-white/10 text-on-surface';
+                bItem.innerText = char;
+                bItem.onclick = () => { findBase.value = char; highlight(scrollBase, bItem); calculateKey(); };
+                scrollBase.appendChild(bItem);
+            });
+
+            const codedSource = currentMode === 'alpha' ? activeAlpha : Array.from({length: activeAlpha.length}, (_, i) => (i + 1).toString());
+            codedSource.forEach(item => {
+                const cItem = document.createElement('div');
+                cItem.className = 'letter-item flex-shrink-0 w-7 h-7 md:w-9 md:h-9 bg-white/5 border border-white/10 rounded-md md:rounded-lg flex items-center justify-center font-bold text-[10px] md:text-xs cursor-pointer transition-all hover:bg-white/10 text-on-surface';
+                cItem.innerText = item;
+                cItem.onclick = () => { findCoded.value = item; highlight(scrollCoded, cItem); calculateKey(); };
+                scrollCoded.appendChild(cItem);
+            });
+            
+            if(currentMode === 'alpha') {
+                modeAlpha.className = "flex-1 py-1 md:py-1.5 text-[10px] md:text-xs font-bold rounded-md transition-all bg-primary text-background";
+                modeNum.className = "flex-1 py-1 md:py-1.5 text-[10px] md:text-xs font-bold rounded-md transition-all text-on-surface-variant hover:text-white";
+            } else {
+                modeNum.className = "flex-1 py-1 md:py-1.5 text-[10px] md:text-xs font-bold rounded-md transition-all bg-primary text-background";
+                modeAlpha.className = "flex-1 py-1 md:py-1.5 text-[10px] md:text-xs font-bold rounded-md transition-all text-on-surface-variant hover:text-white";
+            }
+
+            if(currentLang === 'EN') {
+                langEN.className = "flex-1 py-1 text-[10px] md:text-xs font-bold rounded-md transition-all bg-primary text-background";
+                langVN.className = "flex-1 py-1 text-[10px] md:text-xs font-bold rounded-md transition-all text-on-surface-variant hover:text-white";
+            } else {
+                langVN.className = "flex-1 py-1 text-[10px] md:text-xs font-bold rounded-md transition-all bg-primary text-background";
+                langEN.className = "flex-1 py-1 text-[10px] md:text-xs font-bold rounded-md transition-all text-on-surface-variant hover:text-white";
+            }
+        }
+
+        function highlight(parent, item) {
+            parent.querySelectorAll('.letter-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+        }
+
+        function calculateKey() {
+            const activeAlpha = getActiveAlphabet();
+            const baseIdx = activeAlpha.indexOf(findBase.value.toUpperCase());
+            if (baseIdx === -1) return;
+
+            if (currentMode === 'alpha') {
+                const codedIdx = activeAlpha.indexOf(findCoded.value.toUpperCase());
+                if (codedIdx !== -1) currentKey = (codedIdx - baseIdx + activeAlpha.length) % activeAlpha.length;
+            } else {
+                const numVal = parseInt(findCoded.value);
+                if (!isNaN(numVal)) currentKey = (numVal - 1 - baseIdx + activeAlpha.length) % activeAlpha.length;
+            }
+            updateDisplay();
+        }
+
+        function processText(text, key, isReverse = false) {
+            if (!text) return "-";
+            const activeAlpha = getActiveAlphabet();
+            const N = activeAlpha.length;
+            const upperText = text.toUpperCase();
+
+            if (currentMode === 'alpha') {
+                let shift = isReverse ? key : (N - key);
+                let result = "";
+
+                for (let i = 0; i < upperText.length; i++) {
+                    let char = upperText[i];
+                    let decomposed = char.normalize("NFD");
+                    let baseChar = decomposed[0];
+                    let diacritics = decomposed.slice(1);
+
+                    let idx = activeAlpha.indexOf(baseChar);
+                    if (idx !== -1) {
+                        let newChar = activeAlpha[(idx + shift) % N];
+                        result += (newChar + diacritics).normalize("NFC");
+                    } else {
+                        result += char;
+                    }
+                }
+                return result;
+            } else {
+                if (isReverse) { 
+                    let res = "";
+                    for (let i = 0; i < upperText.length; i++) {
+                        let char = upperText[i];
+                        let idx = activeAlpha.indexOf(char);
+                        if (idx !== -1) {
+                            res += ((idx + key) % N + 1) + " ";
+                        } else {
+                            res += char;
+                        }
+                    }
+                    return res.trim();
+                } else { 
+                    return upperText.replace(/\d+/g, (numStr) => {
+                        let n = parseInt(numStr);
+                        if (n >= 1 && n <= N) return activeAlpha[(n - 1 - key + N * 100) % N];
+                        return numStr;
+                    });
+                }
+            }
+        }
+
+        function updateDisplay() {
+            outputF.innerText = processText(input.value, currentKey, false);
+            outputB.innerText = processText(input.value, currentKey, true);
+        }
+
+        langEN.onclick = () => { currentLang = 'EN'; renderPickers(); calculateKey(); };
+        langVN.onclick = () => { currentLang = 'VN'; renderPickers(); calculateKey(); };
+
+        modeAlpha.onclick = () => { currentMode = 'alpha'; renderPickers(); calculateKey(); };
+        modeNum.onclick = () => { currentMode = 'num'; renderPickers(); calculateKey(); };
+
+        findBase.oninput = () => { calculateKey(); };
+        findCoded.oninput = () => { calculateKey(); };
+        input.oninput = updateDisplay;
+
+        const modal = document.getElementById('infoModal');
+        const modalBody = document.getElementById('modalBody');
+        
+        const openModal = (t) => { modalBody.innerText = t || "Trống"; modal.classList.remove('hidden'); }
+        document.getElementById('btnViewRaw').onclick = () => openModal(input.value);
+        document.getElementById('btnViewForward').onclick = () => openModal(outputF.innerText);
+        document.getElementById('btnViewBackward').onclick = () => openModal(outputB.innerText);
+        document.getElementById('btnClose').onclick = () => modal.classList.add('hidden');
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.add('hidden'); });
+
+        document.getElementById('btnClear').onclick = () => { 
+            input.value = ""; findBase.value = ""; findCoded.value = ""; currentKey = 0; 
+            updateDisplay(); 
+            document.querySelectorAll('.letter-item').forEach(i => i.classList.remove('selected')); 
+        };
+
+        renderPickers();
+    </script>
+</body>
+</html>

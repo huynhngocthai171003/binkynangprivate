@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Mật Thư Khóa Từ (Nha Trang) | CIPHER_CORE</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+    <link rel="shortcut icon" href="BIN KỸ NĂNG-01.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="output.css" rel="stylesheet">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { 
+            background: rgba(31, 31, 39, 0.92); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            padding: 0.65rem !important;
+            border-radius: 0.5rem !important;
+        }
+        @media (min-width: 768px) {
+            .glass-card { 
+                background: rgba(31, 31, 39, 0.6); 
+                backdrop-filter: blur(12px); 
+                padding: 1.5rem !important; 
+                border-radius: 0.75rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        .cipher-glow:focus-within { border-bottom-color: #00f2ff; box-shadow: 0 4px 12px -4px rgba(0, 242, 255, 0.3); }
+        .menu-open aside { transform: translateX(0) !important; }
+        .logo-glow-card { box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); border: 2px solid rgba(0, 242, 255, 0.6); }
+
+        /* Cấu trúc lưới chung 26 cột tối ưu hiển thị mobile */
+        .cipher-table-grid {
+            display: grid;
+            grid-template-columns: 42px repeat(26, minmax(0, 1fr));
+            gap: 1px;
+            width: 100%;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .cipher-table-grid {
+                grid-template-columns: 75px repeat(26, minmax(0, 1fr));
+                gap: 4px;
+            }
+        }
+
+        .char-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0.15rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.5rem; /* Thu nhỏ chữ trên mobile cho vừa khít */
+        }
+        @media (min-width: 768px) {
+            .char-box {
+                font-size: 0.85rem;
+                border-radius: 0.25rem;
+            }
+        }
+        /* Style cho cụm từ khóa (Nổi bật màu vàng) */
+        .char-box-keyword {
+            background-color: rgba(245, 158, 11, 0.25);
+            border-color: rgba(245, 158, 11, 0.9);
+            color: #fbbf24;
+            box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
+        }
+        /* Style cho các ký tự còn lại trong bảng khóa */
+        .char-box-cipher {
+            background-color: rgba(0, 242, 255, 0.05);
+            border-color: rgba(0, 242, 255, 0.25);
+            color: #00f2ff;
+        }
+        /* Style cho bảng gốc A-Z */
+        .char-box-standard {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" id="menuOverlay"></div>
+
+    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
+        <div class="px-6 flex flex-col items-center w-full">
+            <div class="w-full aspect-square rounded-3xl bg-white p-4 logo-glow-card flex items-center justify-center overflow-hidden mb-5 transition-all hover:scale-[1.03]">
+                <img src="BIN KỸ NĂNG-01.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="material-symbols-outlined text-background text-6xl hidden">token</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="index.html">
+                <span class="material-symbols-outlined">subtitles</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Morse Code</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="semaphore.html">
+                <span class="material-symbols-outlined">sign_language</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Semaphore</span>
+            </a>
+            <a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 transition-all" href="thaythe.html">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span class="font-label-md text-xs uppercase tracking-widest font-bold">Thay thế</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="camranh.html">
+                <span class="material-symbols-outlined">grid_on</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Dời chỗ</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="md:pl-64 pt-1 md:pt-6 min-h-screen w-full">
+        <div class="px-1 md:px-8 py-1 md:py-8 max-w-container-max mx-auto flex flex-col gap-1.5 md:gap-6">
+            
+            <header class="mb-1 md:mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <button class="material-symbols-outlined block md:hidden text-primary transition-colors active:scale-95 text-2xl md:text-3xl" id="menuToggle">menu</button>
+                        <h1 class="font-display-lg text-lg md:text-5xl font-bold text-primary tracking-wide">MẬT THƯ KHÓA TỪ (NHA TRANG)</h1>
+                    </div>
+                </div>
+            </header>
+
+            <div id="subnav-container" data-category="thaythe"></div>
+
+            <div class="flex flex-col lg:grid lg:grid-cols-12 gap-1.5 md:gap-6">
+                
+                <!-- Cột Cấu Hình Khóa -->
+                <section class="order-1 lg:order-2 lg:col-span-4 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">key</span> NHẬP KHÓA TỪ
+                            </h2>
+                            <button id="btnClearKey" class="text-error/70 hover:text-error flex items-center gap-1 text-[10px] md:text-[11px] font-bold uppercase tracking-widest active:scale-95 transition-all">
+                                <span class="material-symbols-outlined text-xs font-bold">delete_sweep</span>
+                                <span>XÓA</span>
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] md:text-xs font-label-md text-on-surface-variant font-bold uppercase tracking-wider">TỪ KHÓA (KEYWORD)</label>
+                            <input type="text" id="inputKey" value="NHA TRANG" class="w-full bg-surface-container-highest border border-primary/40 rounded-lg p-2.5 text-primary font-bold text-sm md:text-base uppercase tracking-widest outline-none focus:ring-1 focus:ring-primary">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Cột Nhập Liệu & Kết Quả -->
+                <section class="order-2 lg:order-1 lg:col-span-8 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col relative">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">keyboard</span> BẠCH VĂN / MẬT THƯ CẦN DỊCH
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewRaw">XEM GỐC</button>
+                        </div>
+                        <textarea class="w-full bg-transparent border-none border-b border-outline-variant focus:ring-0 focus:border-primary text-sm md:text-xl text-on-surface py-1 cipher-glow h-14 md:min-h-[100px] resize-none font-medium" id="inputText" placeholder="Nhập nội dung cần dịch..." autocomplete="off" spellcheck="false"></textarea>
+                    </div>
+
+                    <!-- HAI BẢNG CHIẾU -->
+                    <div class="glass-card flex flex-col gap-2">
+                        <span class="text-[10px] md:text-xs font-label-md text-on-surface-variant font-bold uppercase tracking-wider text-center">HAI BẢNG CHIẾU (A-Z & KHÓA)</span>
+                        
+                        <div class="bg-black/40 border border-white/5 rounded-lg p-2 md:p-4 overflow-x-hidden">
+                            <div class="w-full flex flex-col gap-2">
+                                <!-- Hàng A-Z Gốc -->
+                                <div id="rowStandard" class="cipher-table-grid">
+                                    <span class="text-on-surface-variant font-bold text-right text-[9px] md:text-xs pr-1">GỐC:</span>
+                                </div>
+                                
+                                <hr class="border-white/10">
+
+                                <!-- Hàng Khóa Dịch -->
+                                <div id="rowKeyword" class="cipher-table-grid">
+                                    <span class="text-primary font-bold text-right text-[9px] md:text-xs pr-1">KHÓA:</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card flex flex-col">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">lock_open</span> CHIỀU XUÔI (GỐC ➔ KHÓA / MÃ HÓA)
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewForward">XEM</button>
+                        </div>
+                        <div class="p-2 md:p-4 bg-black/40 border border-white/5 rounded-lg font-mono-data text-sm md:text-xl text-primary font-bold tracking-wider overflow-hidden text-ellipsis whitespace-nowrap" id="outputForward">-</div>
+                    </div>
+
+                    <div class="glass-card flex flex-col">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-error flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">lock</span> CHIỀU NGƯỢC (KHÓA ➔ GỐC / GIẢI MÃ)
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-error" id="btnViewBackward">XEM</button>
+                        </div>
+                        <div class="p-2 md:p-4 bg-black/40 border border-white/5 rounded-lg font-mono-data text-sm md:text-xl text-error font-bold tracking-wider overflow-hidden text-ellipsis whitespace-nowrap" id="outputBackward">-</div>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Xem Chi Tiết -->
+    <div class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md transition-all duration-300" id="infoModal">
+        <div class="bg-surface-container-high border border-primary/30 rounded-2xl w-full max-w-2xl p-6 flex flex-col shadow-2xl">
+            <div class="flex-1 max-h-[60vh] overflow-y-auto text-on-background text-xl md:text-2xl font-mono-data p-4 md:p-6 break-all leading-loose tracking-widest bg-black/30 rounded-xl text-center" id="modalBody"></div>
+            <button class="w-full mt-4 bg-primary text-background font-bold p-3 rounded-xl hover:brightness-110 active:scale-95 transition-all text-sm uppercase tracking-widest font-bold" id="btnClose">ĐÓNG WINDOWS</button>
+        </div>
+    </div>
+
+    <!-- Gọi file cấu hình menu chung -->
+    <script src="nav.js"></script>
+
+    <script>
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuToggle = document.getElementById('menuToggle');
+        menuToggle.onclick = (e) => { document.body.classList.add('menu-open'); menuOverlay.classList.remove('hidden'); e.stopPropagation(); }
+        menuOverlay.onclick = () => { document.body.classList.remove('menu-open'); menuOverlay.classList.add('hidden'); }
+
+        const inputKey = document.getElementById('inputKey');
+        const inputText = document.getElementById('inputText');
+        const outputForward = document.getElementById('outputForward');
+        const outputBackward = document.getElementById('outputBackward');
+        const rowStandard = document.getElementById('rowStandard');
+        const rowKeyword = document.getElementById('rowKeyword');
+        const btnClearKey = document.getElementById('btnClearKey');
+
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+        function removeVietnameseAccents(str) {
+            if (!str) return '';
+            return str.normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
+                      .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+        }
+
+        function getUniqueKeyChars(keyword) {
+            let cleanKey = removeVietnameseAccents(keyword).toUpperCase().replace(/[^A-Z]/g, '');
+            let seen = new Set();
+            let uniqueKeyArr = [];
+            for (let char of cleanKey) {
+                if (!seen.has(char)) {
+                    seen.add(char);
+                    uniqueKeyArr.push(char);
+                }
+            }
+            return uniqueKeyArr;
+        }
+
+        function generateKeywordAlphabet(keyword) {
+            let uniqueKeyArr = getUniqueKeyChars(keyword);
+            let seen = new Set(uniqueKeyArr);
+            let cipherArr = [...uniqueKeyArr];
+
+            for (let char of alphabet) {
+                if (!seen.has(char)) {
+                    seen.add(char);
+                    cipherArr.push(char);
+                }
+            }
+            return cipherArr;
+        }
+
+        function processTranslation() {
+            let key = inputKey.value || "NHA TRANG";
+            let stdRow = alphabet;
+            let keyRow = generateKeywordAlphabet(key);
+            let keyCharsSet = new Set(getUniqueKeyChars(key));
+
+            let stdHtml = `<span class="text-on-surface-variant font-bold text-right text-[9px] md:text-xs pr-1">GỐC:</span>`;
+            stdHtml += stdRow.map(c => `<div class="char-box char-box-standard">${c}</div>`).join("");
+            rowStandard.innerHTML = stdHtml;
+
+            let keyHtml = `<span class="text-primary font-bold text-right text-[9px] md:text-xs pr-1">KHÓA:</span>`;
+            keyHtml += keyRow.map(c => {
+                let isKeyChar = keyCharsSet.has(c);
+                let customClass = isKeyChar ? "char-box-keyword" : "char-box-cipher";
+                return `<div class="char-box ${customClass}">${c}</div>`;
+            }).join("");
+            rowKeyword.innerHTML = keyHtml;
+
+            let processed = inputText.value || "";
+            let forwardRes = "";
+            let backwardRes = "";
+
+            for (let i = 0; i < processed.length; i++) {
+                let char = processed[i];
+                let upperChar = char.toUpperCase();
+                let stdIdx = stdRow.indexOf(upperChar);
+
+                if (stdIdx !== -1) {
+                    let mapped = keyRow[stdIdx];
+                    forwardRes += (char === char.toLowerCase()) ? mapped.toLowerCase() : mapped;
+                } else {
+                    forwardRes += char;
+                }
+            }
+
+            for (let i = 0; i < processed.length; i++) {
+                let char = processed[i];
+                let upperChar = char.toUpperCase();
+                let kwIdx = keyRow.indexOf(upperChar);
+
+                if (kwIdx !== -1) {
+                    let mapped = stdRow[kwIdx];
+                    backwardRes += (char === char.toLowerCase()) ? mapped.toLowerCase() : mapped;
+                } else {
+                    backwardRes += char;
+                }
+            }
+
+            outputForward.innerText = forwardRes || "-";
+            outputBackward.innerText = backwardRes || "-";
+        }
+
+        inputKey.oninput = processTranslation;
+        inputText.oninput = processTranslation;
+        btnClearKey.onclick = () => { inputKey.value = ""; processTranslation(); };
+
+        const modal = document.getElementById('infoModal');
+        const modalBody = document.getElementById('modalBody');
+        
+        const openModal = (t) => { modalBody.innerText = t || "Trống"; modal.classList.remove('hidden'); }
+        document.getElementById('btnViewRaw').onclick = () => openModal(inputText.value);
+        document.getElementById('btnViewForward').onclick = () => openModal(outputForward.innerText);
+        document.getElementById('btnViewBackward').onclick = () => openModal(outputBackward.innerText);
+        document.getElementById('btnClose').onclick = () => modal.classList.add('hidden');
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.add('hidden'); });
+
+        processTranslation();
+    </script>
+</body>
+</html>

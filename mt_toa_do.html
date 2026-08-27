@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Mật Thư Tọa Độ | CIPHER_CORE</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+    <link rel="shortcut icon" href="BIN KỸ NĂNG-01.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="output.css" rel="stylesheet">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { 
+            background: rgba(31, 31, 39, 0.92); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            padding: 0.65rem !important;
+            border-radius: 0.5rem !important;
+        }
+        @media (min-width: 768px) {
+            .glass-card { 
+                background: rgba(31, 31, 39, 0.6); 
+                backdrop-filter: blur(12px); 
+                padding: 1.5rem !important; 
+                border-radius: 0.75rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        .cipher-glow:focus-within { border-bottom-color: #00f2ff; box-shadow: 0 4px 12px -4px rgba(0, 242, 255, 0.3); }
+        .menu-open aside { transform: translateX(0) !important; }
+        .logo-glow-card { box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); border: 2px solid rgba(0, 242, 255, 0.6); }
+    </style>
+    <script src="nav.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" id="menuOverlay"></div>
+
+    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
+        <div class="px-6 flex flex-col items-center w-full">
+            <div class="w-full aspect-square rounded-3xl bg-white p-4 logo-glow-card flex items-center justify-center overflow-hidden mb-5 transition-all hover:scale-[1.03]">
+                <img src="BIN KỸ NĂNG-01.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="material-symbols-outlined text-background text-6xl hidden">token</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="index.html">
+                <span class="material-symbols-outlined">subtitles</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Morse Code</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="semaphore.html">
+                <span class="material-symbols-outlined">sign_language</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Semaphore</span>
+            </a>
+            <a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 transition-all" href="thaythe.html">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span class="font-label-md text-xs uppercase tracking-widest font-bold">Thay thế</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="camranh.html">
+                <span class="material-symbols-outlined">grid_on</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Dời chỗ</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="md:pl-64 pt-1 md:pt-6 min-h-screen w-full">
+        <div class="px-1 md:px-8 py-1 md:py-8 max-w-container-max mx-auto flex flex-col gap-1.5 md:gap-6">
+            
+            <header class="mb-1 md:mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <button class="material-symbols-outlined block md:hidden text-primary transition-colors active:scale-95 text-2xl md:text-3xl" id="menuToggle">menu</button>
+                        <h1 class="font-display-lg text-lg md:text-5xl font-bold text-primary tracking-wide">MẬT THƯ TỌA ĐỘ</h1>
+                    </div>
+                </div>
+            </header>
+
+            <div id="subnav-container" data-category="thaythe"></div>
+
+            <div id="coordinateModule" class="flex flex-col lg:grid lg:grid-cols-12 gap-1.5 md:gap-6 w-full">
+                
+                <section class="order-1 lg:order-2 lg:col-span-4 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col gap-2 md:gap-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">tune</span> CẤU HÌNH MA TRẬN
+                            </h2>
+                            <button id="btnCoordClear" class="text-error/70 hover:text-error flex items-center gap-1 text-[10px] md:text-[11px] font-bold uppercase tracking-widest active:scale-95 transition-all">
+                                <span class="material-symbols-outlined text-xs font-bold">delete_sweep</span>
+                                <span>CLEAR</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[10px] md:text-xs font-label-md text-on-surface-variant font-bold uppercase block mb-1">Số Hàng (Dọc)</label>
+                                <input type="number" id="coordRows" value="4" min="2" max="10" class="w-full bg-surface-container-highest border border-primary/30 rounded-lg p-2 text-center text-primary font-bold text-sm focus:ring-1 focus:ring-primary outline-none">
+                            </div>
+                            <div>
+                                <label class="text-[10px] md:text-xs font-label-md text-on-surface-variant font-bold uppercase block mb-1">Số Cột (Ngang)</label>
+                                <input type="number" id="coordCols" value="8" min="2" max="10" class="w-full bg-surface-container-highest border border-primary/30 rounded-lg p-2 text-center text-primary font-bold text-sm focus:ring-1 focus:ring-primary outline-none">
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-black/20 rounded-lg border border-white/5 text-[11px] text-on-surface-variant leading-relaxed">
+                            💡 <b class="text-primary">HƯỚNG DẪN NHANH:</b><br/>
+                            • Click vào <b class="text-primary">Tiêu đề Cột (Xanh)</b> hoặc <b class="text-error">Hàng (Hồng)</b> để sửa tên nhãn (VD: Đ, ĐN, T...).<br/>
+                            • Click vào <b class="text-white">Ô Chữ Cái</b> trên bảng để chọn ký tự bắt đầu.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="order-2 lg:order-1 lg:col-span-8 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col relative">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">pin</span> BẢN TIN TỌA ĐỘ CẦN GIẢI
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewCoordRaw">XEM GỐC</button>
+                        </div>
+                        <textarea class="w-full bg-transparent border-none border-b border-outline-variant focus:ring-0 focus:border-primary text-sm md:text-xl text-on-surface py-1 cipher-glow h-14 md:min-h-[80px] resize-none font-medium font-mono-data" id="inputCoordText" placeholder="Nhập tọa độ (VD: TN1 B2 hoặc ĐÔNG-BẮC)..." autocomplete="off" spellcheck="false"></textarea>
+                    </div>
+
+                    <div class="glass-card flex flex-col w-full">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">grid_on</span> MA TRẬN TỌA ĐỘ TỰ ĐỘNG FILL
+                            </h2>
+                        </div>
+                        <div class="w-full bg-black/40 border border-white/5 rounded-lg p-1.5 md:p-3 overflow-x-auto" id="coordGridContainer"></div>
+                    </div>
+
+                    <div class="glass-card flex flex-col gap-3">
+                        <div class="flex flex-col">
+                            <div class="flex items-center justify-between mb-1">
+                                <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                    <span class="material-symbols-outlined text-sm md:text-base">lock_open</span> KẾT QUẢ (CỘT TRƯỚC ➔ HÀNG SAU)
+                                </h2>
+                                <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewCoordCR">XEM</button>
+                            </div>
+                            <div class="p-3 bg-black/40 border border-white/5 rounded-lg font-mono-data text-base md:text-2xl text-primary font-bold tracking-wider break-all" id="coordOutputCR">-</div>
+                        </div>
+
+                        <div class="flex flex-col border-t border-white/10 pt-2">
+                            <div class="flex items-center justify-between mb-1">
+                                <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-secondary flex items-center gap-1.5 font-bold">
+                                    <span class="material-symbols-outlined text-sm md:text-base">swap_calls</span> KẾT QUẢ (HÀNG TRƯỚC ➔ CỘT SAU)
+                                </h2>
+                                <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-secondary" id="btnViewCoordRC">XEM</button>
+                            </div>
+                            <div class="p-3 bg-black/40 border border-white/5 rounded-lg font-mono-data text-base md:text-2xl text-secondary font-bold tracking-wider break-all" id="coordOutputRC">-</div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL POPUP EDIT NHÃN & CHỮ -->
+    <div class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md transition-all duration-300" id="editModal">
+        <div class="bg-surface-container-high border border-primary/40 rounded-2xl w-full max-w-md p-5 flex flex-col gap-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                <h3 class="text-xs md:text-sm font-bold uppercase tracking-wider text-primary flex items-center gap-2" id="editModalTitle">CHỈNH SỬA</h3>
+                <button id="btnEditClose" class="text-on-surface-variant hover:text-white"><span class="material-symbols-outlined text-base">close</span></button>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-xs text-on-surface-variant font-bold" id="editModalLabel">Nhập giá trị mới:</label>
+                <input type="text" id="editModalInput" class="w-full bg-surface-container-highest border border-primary/50 rounded-xl p-3 text-center text-primary font-bold text-lg md:text-xl uppercase outline-none focus:ring-2 focus:ring-primary/50" autocomplete="off">
+            </div>
+            <div class="flex items-center justify-end gap-2 pt-1">
+                <button id="btnEditCancel" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold text-on-surface-variant">HỦY BỎ</button>
+                <button id="btnEditSave" class="px-5 py-2 bg-primary text-background rounded-xl text-xs font-black uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all">LƯU CẬP NHẬT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Box Xem Chi Tiết -->
+    <div class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md transition-all duration-300" id="infoModal">
+        <div class="bg-surface-container-high border border-primary/30 rounded-2xl w-full max-w-2xl p-6 flex flex-col shadow-2xl">
+            <div class="flex-1 max-h-[60vh] overflow-y-auto text-on-background text-xl md:text-2xl font-mono-data p-4 md:p-6 break-all leading-loose tracking-widest bg-black/30 rounded-xl text-center" id="modalBody"></div>
+            <button class="w-full mt-4 bg-primary text-background font-bold p-3 rounded-xl hover:brightness-110 active:scale-95 transition-all text-sm uppercase tracking-widest font-bold" id="btnClose">ĐÓNG WINDOWS</button>
+        </div>
+    </div>
+
+    <script>
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuToggle = document.getElementById('menuToggle');
+        menuToggle.onclick = (e) => { document.body.classList.add('menu-open'); menuOverlay.classList.remove('hidden'); e.stopPropagation(); }
+        menuOverlay.onclick = () => { document.body.classList.remove('menu-open'); menuOverlay.classList.add('hidden'); }
+
+        const editModal = document.getElementById('editModal');
+        const editModalTitle = document.getElementById('editModalTitle');
+        const editModalLabel = document.getElementById('editModalLabel');
+        const editModalInput = document.getElementById('editModalInput');
+        const btnEditClose = document.getElementById('btnEditClose');
+        const btnEditCancel = document.getElementById('btnEditCancel');
+        const btnEditSave = document.getElementById('btnEditSave');
+
+        let onEditSaveCallback = null;
+
+        function openCustomEditModal(title, label, defaultValue, callback) {
+            editModalTitle.innerText = title;
+            editModalLabel.innerText = label;
+            editModalInput.value = defaultValue || '';
+            onEditSaveCallback = callback;
+            editModal.classList.remove('hidden');
+            setTimeout(() => { editModalInput.focus(); editModalInput.select(); }, 100);
+        }
+
+        function closeCustomEditModal() {
+            editModal.classList.add('hidden');
+            onEditSaveCallback = null;
+        }
+
+        btnEditClose.onclick = closeCustomEditModal;
+        btnEditCancel.onclick = closeCustomEditModal;
+        btnEditSave.onclick = () => {
+            if (onEditSaveCallback) onEditSaveCallback(editModalInput.value.trim());
+            closeCustomEditModal();
+        };
+
+        editModalInput.onkeydown = (e) => {
+            if (e.key === 'Enter') btnEditSave.click();
+            else if (e.key === 'Escape') closeCustomEditModal();
+        };
+
+        const coordRowsInput = document.getElementById('coordRows');
+        const coordColsInput = document.getElementById('coordCols');
+        const inputCoordText = document.getElementById('inputCoordText');
+        const coordGridContainer = document.getElementById('coordGridContainer');
+        const coordOutputRC = document.getElementById('coordOutputRC');
+        const coordOutputCR = document.getElementById('coordOutputCR');
+        const btnCoordClear = document.getElementById('btnCoordClear');
+
+        const alphabetList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        
+        let selectedStartR = 0;
+        let selectedStartC = 0;
+        let selectedStartChar = 'A';
+
+        let rowLabelsArr = ["1", "2", "3", "4"];
+        let colLabelsArr = ["Đ", "ĐN", "T", "TN", "N", "TB", "B", "ĐB"];
+
+        let currentMatrixMap = {};
+
+        function renderCoordinateMatrix() {
+            const numRows = parseInt(coordRowsInput.value) || 4;
+            const numCols = parseInt(coordColsInput.value) || 8;
+
+            if (selectedStartR >= numRows) selectedStartR = numRows - 1;
+            if (selectedStartC >= numCols) selectedStartC = numCols - 1;
+
+            while (rowLabelsArr.length < numRows) rowLabelsArr.push((rowLabelsArr.length + 1).toString());
+            while (colLabelsArr.length < numCols) colLabelsArr.push((colLabelsArr.length + 1).toString());
+
+            const totalCells = numRows * numCols;
+            const maxCharsCount = Math.min(26, totalCells); 
+            const availableAlphabet = alphabetList.slice(0, maxCharsCount);
+
+            let startCharIdx = availableAlphabet.indexOf(selectedStartChar);
+            if (startCharIdx === -1) startCharIdx = 0;
+
+            let matrix = Array.from({ length: numRows }, () => Array(numCols).fill(''));
+            currentMatrixMap = {};
+
+            let curR = selectedStartR;
+            let curC = selectedStartC;
+
+            for (let i = 0; i < availableAlphabet.length; i++) {
+                let char = availableAlphabet[(startCharIdx + i) % availableAlphabet.length];
+                matrix[curR][curC] = char;
+                
+                let rKey = rowLabelsArr[curR];
+                let cKey = colLabelsArr[curC];
+
+                currentMatrixMap[`${rKey}-${cKey}`] = char;
+                currentMatrixMap[`${curR + 1}-${curC + 1}`] = char;
+
+                curC++;
+                if (curC >= numCols) {
+                    curC = 0;
+                    curR = (curR + 1) % numRows;
+                }
+            }
+
+            let tableHtml = `<table class="w-full border-collapse text-center font-mono-data border border-white/10 table-fixed"><thead><tr><th class="p-1 md:p-2 border border-white/10 text-error font-bold text-xs bg-error/5 w-12">R\\C</th>`;
+            
+            for (let c = 0; c < numCols; c++) {
+                tableHtml += `<th class="th-col-header p-1.5 md:p-2.5 border border-white/10 text-primary font-bold text-xs md:text-sm bg-primary/10 hover:bg-primary/20 cursor-pointer transition-all truncate" data-c="${c}">${colLabelsArr[c]}</th>`;
+            }
+            tableHtml += `</tr></thead><tbody>`;
+
+            for (let r = 0; r < numRows; r++) {
+                tableHtml += `<tr>`;
+                tableHtml += `<td class="td-row-header p-1.5 md:p-2.5 border border-white/10 text-error font-bold text-xs md:text-sm bg-error/10 hover:bg-error/20 cursor-pointer transition-all truncate" data-r="${r}">${rowLabelsArr[r]}</td>`;
+                
+                for (let c = 0; c < numCols; c++) {
+                    let cellChar = matrix[r][c] || '&nbsp;';
+                    let isStart = (r === selectedStartR && c === selectedStartC);
+                    let cellClass = isStart ? 'bg-primary text-background font-black scale-100 shadow-md ring-2 ring-primary' : 'bg-black/30 text-on-surface font-bold hover:bg-white/10 cursor-pointer';
+                    tableHtml += `<td class="cell-coord p-1.5 md:p-3 border border-white/10 text-sm md:text-lg ${cellClass} transition-all" data-r="${r}" data-c="${c}">${cellChar}</td>`;
+                }
+                tableHtml += `</tr>`;
+            }
+            tableHtml += `</tbody></table>`;
+
+            coordGridContainer.innerHTML = tableHtml;
+
+            coordGridContainer.querySelectorAll('.th-col-header').forEach(th => {
+                th.onclick = () => {
+                    let c = parseInt(th.getAttribute('data-c'));
+                    openCustomEditModal("ĐỔI TÊN CỘT " + (c + 1), "Nhập tên nhãn mới cho Cột:", colLabelsArr[c], (val) => {
+                        if (val) {
+                            colLabelsArr[c] = val.toUpperCase();
+                            renderCoordinateMatrix();
+                        }
+                    });
+                };
+            });
+
+            coordGridContainer.querySelectorAll('.td-row-header').forEach(td => {
+                td.onclick = () => {
+                    let r = parseInt(td.getAttribute('data-r'));
+                    openCustomEditModal("ĐỔI TÊN HÀNG " + (r + 1), "Nhập tên nhãn mới cho Hàng:", rowLabelsArr[r], (val) => {
+                        if (val) {
+                            rowLabelsArr[r] = val.toUpperCase();
+                            renderCoordinateMatrix();
+                        }
+                    });
+                };
+            });
+
+            coordGridContainer.querySelectorAll('.cell-coord').forEach(cell => {
+                cell.onclick = () => {
+                    let r = parseInt(cell.getAttribute('data-r'));
+                    let c = parseInt(cell.getAttribute('data-c'));
+                    openCustomEditModal("VỊ TRÍ BẮT ĐẦU", `Chữ cái xuất phát tại Ô [Hàng: ${rowLabelsArr[r]} - Cột: ${colLabelsArr[c]}]:`, selectedStartChar, (val) => {
+                        if (val) {
+                            let cleanChar = val.toUpperCase().replace(/[^A-Z]/g, '');
+                            if (cleanChar.length > 0) {
+                                selectedStartChar = cleanChar[0];
+                                selectedStartR = r;
+                                selectedStartC = c;
+                                renderCoordinateMatrix();
+                            }
+                        }
+                    });
+                };
+            });
+
+            solveCoordinateCipher();
+        }
+
+        function solveCoordinateCipher() {
+            const rawText = inputCoordText.value.trim();
+            if (!rawText) {
+                if (coordOutputRC) coordOutputRC.innerText = "-";
+                if (coordOutputCR) coordOutputCR.innerText = "-";
+                return;
+            }
+
+            const tokens = rawText.split(/[\s,\/]+/).filter(t => t.length > 0);
+            let decodedCR = "";
+            let decodedRC = "";
+
+            function parseTokenToPair(token, firstList, secondList) {
+                let clean = token.toUpperCase();
+                if (clean.includes('-')) {
+                    let parts = clean.split('-').map(p => p.trim());
+                    if (parts.length === 2) return parts;
+                }
+                for (let label1 of firstList) {
+                    if (clean.startsWith(label1)) {
+                        let remainder = clean.substring(label1.length);
+                        if (secondList.includes(remainder)) {
+                            return [label1, remainder];
+                        }
+                    }
+                }
+                return null;
+            }
+
+            tokens.forEach(token => {
+                let cleanToken = token.toUpperCase();
+
+                if (cleanToken === '/' || cleanToken === '||') {
+                    decodedCR += " ";
+                    decodedRC += " ";
+                    return;
+                }
+
+                let pairCR = parseTokenToPair(cleanToken, colLabelsArr, rowLabelsArr);
+                if (pairCR) {
+                    let char = currentMatrixMap[`${pairCR[1]}-${pairCR[0]}`];
+                    decodedCR += char ? char : "";
+                }
+
+                let pairRC = parseTokenToPair(cleanToken, rowLabelsArr, colLabelsArr);
+                if (pairRC) {
+                    let char = currentMatrixMap[`${pairRC[0]}-${pairRC[1]}`];
+                    decodedRC += char ? char : "";
+                }
+            });
+
+            if (coordOutputCR) coordOutputCR.innerText = decodedCR.trim() || "-";
+            if (coordOutputRC) coordOutputRC.innerText = decodedRC.trim() || "-";
+        }
+
+        [coordRowsInput, coordColsInput].forEach(elem => {
+            if (elem) elem.addEventListener('input', renderCoordinateMatrix);
+        });
+        if (inputCoordText) inputCoordText.addEventListener('input', solveCoordinateCipher);
+
+        if (btnCoordClear) {
+            btnCoordClear.onclick = () => {
+                inputCoordText.value = "";
+                solveCoordinateCipher();
+            };
+        }
+
+        const modal = document.getElementById('infoModal');
+        const modalBody = document.getElementById('modalBody');
+        const btnViewCoordRaw = document.getElementById('btnViewCoordRaw');
+        const btnViewCoordRC = document.getElementById('btnViewCoordRC');
+        const btnViewCoordCR = document.getElementById('btnViewCoordCR');
+
+        if (btnViewCoordRaw) {
+            btnViewCoordRaw.onclick = () => {
+                if (modalBody) modalBody.innerText = inputCoordText.value || "Trống";
+                if (modal) modal.classList.remove('hidden');
+            };
+        }
+        if (btnViewCoordRC) {
+            btnViewCoordRC.onclick = () => {
+                if (modalBody) modalBody.innerText = coordOutputRC.innerText || "-";
+                if (modal) modal.classList.remove('hidden');
+            };
+        }
+        if (btnViewCoordCR) {
+            btnViewCoordCR.onclick = () => {
+                if (modalBody) modalBody.innerText = coordOutputCR.innerText || "-";
+                if (modal) modal.classList.remove('hidden');
+            };
+        }
+        document.getElementById('btnClose').onclick = () => modal.classList.add('hidden');
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.add('hidden'); });
+
+        renderCoordinateMatrix();
+    </script>
+</body>
+</html>

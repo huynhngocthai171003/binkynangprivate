@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Học Tập Morse | CIPHER_CORE</title>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+    <link rel="shortcut icon" href="BIN KỸ NĂNG-01.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="output.css" rel="stylesheet">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        .glass-card {
+            background: rgba(31, 31, 39, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.65rem !important;
+            border-radius: 0.5rem !important;
+        }
+        @media (min-width: 768px) {
+            .glass-card {
+                background: rgba(31, 31, 39, 0.6);
+                backdrop-filter: blur(12px);
+                padding: 1.5rem !important;
+                border-radius: 0.75rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        .menu-open aside { transform: translateX(0) !important; }
+        .logo-glow-card { box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); border: 2px solid rgba(0, 242, 255, 0.6); }
+    </style>
+<script src="nav.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" id="menuOverlay"></div>
+
+    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
+        <div class="px-6 flex flex-col items-center w-full">
+            <div class="w-full aspect-square rounded-3xl bg-white p-4 logo-glow-card flex items-center justify-center overflow-hidden mb-5 transition-all hover:scale-[1.03]">
+                <img src="BIN KỸ NĂNG-01.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="material-symbols-outlined text-background text-6xl hidden">token</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 transition-all" href="index.html">
+                <span class="material-symbols-outlined">subtitles</span>
+                <span class="font-label-md text-xs uppercase tracking-widest font-bold">Morse Code</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="semaphore.html">
+                <span class="material-symbols-outlined">sign_language</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Semaphore</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="thaythe.html">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Thay thế</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="camranh.html">
+                <span class="material-symbols-outlined">grid_on</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Dời chỗ</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="md:pl-64 pt-1 md:pt-6 min-h-screen w-full">
+        <div class="px-1 md:px-8 py-1 md:py-8 max-w-container-max mx-auto flex flex-col gap-1.5 md:gap-6">
+            
+            <header class="mb-1 md:mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <button class="material-symbols-outlined block md:hidden text-primary transition-colors active:scale-95 text-2xl md:text-3xl" id="menuToggle">menu</button>
+                        <h1 class="font-display-lg text-lg md:text-5xl font-bold text-primary tracking-wide">HỌC TẬP MORSE</h1>
+                    </div>
+                </div>
+            </header>
+
+            <div id="subnav-container" data-category="morse"></div>
+
+            <div id="learnModule" class="flex flex-col gap-6 w-full">
+                <div class="glass-card">
+                    <h2 class="font-label-md text-xs md:text-base uppercase tracking-widest text-primary flex items-center gap-1.5 mb-3 md:mb-6 font-bold">
+                        <span class="material-symbols-outlined text-sm md:text-base">menu_book</span> BẢNG TRA CỨU ĐỐI XỨNG CÁC NHÓM CHỮ
+                    </h2>
+                    
+                    <div class="space-y-4 md:space-y-8">
+                        <div>
+                            <h3 class="text-[10px] md:text-xs font-bold uppercase text-secondary tracking-wider mb-2 pb-1 border-b border-white/5">Nhóm I: 8 Chữ Cái Đầu Tiên</h3>
+                            <div class="grid grid-cols-2 gap-2 md:gap-4">
+                                <div class="space-y-1.5">
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">E</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">.</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">I</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">..</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">S</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">...</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">H</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">....</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">T</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">M</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">--</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">O</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">---</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">CH</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">----</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-[10px] md:text-xs font-bold uppercase text-secondary tracking-wider mb-2 pb-1 border-b border-white/5">Nhóm II: 6 Chữ Cái Kế Tiếp</h3>
+                            <div class="grid grid-cols-2 gap-2 md:gap-4">
+                                <div class="space-y-1.5">
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-secondary">A</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">.-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-secondary">W</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">.--</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-secondary">J</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">.---</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-secondary">N</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">-.</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-secondary">D</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">-..</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-secondary">B</span>
+                                        <span class="font-mono-data text-sm md:text-base text-on-surface-variant font-bold">-...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-[10px] md:text-xs font-bold uppercase text-secondary tracking-wider mb-2 pb-1 border-b border-white/5">Nhóm III: Các Chữ Cái Còn Lại & Ký Số Tra Cứu</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Cột Chữ Cái Còn Lại</div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">C</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">-.-.</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">F</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">..-.</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">G</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">--.</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">K</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">-.-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">L</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">.-..</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">P</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">.--.</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">Q</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">--.-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">R</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">.-.</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">U</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">..-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">V</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">...-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">X</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">-..-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">Y</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">-.--</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-on-background">Z</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">--..</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Cột Ký Số</div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">0</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">-----</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">1</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">.----</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">2</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">..---</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">3</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">...--</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">4</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">....-</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">5</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">.....</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">6</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">-....</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">7</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">--...</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">8</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">---..</span>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-black/30 border border-white/5 p-2 md:p-3 rounded-lg">
+                                        <span class="text-sm md:text-xl font-bold text-primary">9</span>
+                                        <span class="font-mono-data text-sm md:text-base text-outline font-bold">----.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div class="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const overlay = document.getElementById('menuOverlay');
+
+        menuToggle.addEventListener('click', (e) => {
+            document.body.classList.add('menu-open');
+            overlay.classList.remove('hidden');
+            e.stopPropagation();
+        });
+        overlay.addEventListener('click', () => {
+            document.body.classList.remove('menu-open');
+            overlay.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>

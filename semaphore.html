@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Luyện Tập Semaphore | CIPHER_CORE</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+    <link rel="shortcut icon" href="BIN KỸ NĂNG-01.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="output.css" rel="stylesheet">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        .glass-card { 
+            background: rgba(31, 31, 39, 0.92); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            padding: 0.65rem !important;
+            border-radius: 0.5rem !important;
+        }
+        @media (min-width: 768px) {
+            .glass-card { 
+                background: rgba(31, 31, 39, 0.6); 
+                backdrop-filter: blur(12px); 
+                padding: 1.5rem !important; 
+                border-radius: 0.75rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        .cipher-glow:focus-within { border-bottom-color: #00d2fc; box-shadow: 0 4px 12px -4px rgba(0, 210, 252, 0.3); }
+        @keyframes pulse-cyan {
+            0% { box-shadow: 0 0 0 0 rgba(0, 210, 252, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 210, 252, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 210, 252, 0); }
+        }
+        .play-active { animation: pulse-cyan 1.5s infinite; background-color: #00d2fc !important; color: #13131b !important; }
+        .menu-open aside { transform: translateX(0) !important; }
+        .logo-glow-card { box-shadow: 0 0 30px rgba(0, 210, 252, 0.4); border: 2px solid rgba(0, 210, 252, 0.6); }
+        
+        .semaphore-img { 
+            width: 100% !important;     
+            height: 100% !important;    
+            max-width: 380px !important; 
+            max-height: 380px !important;
+            object-fit: contain;        
+            filter: drop-shadow(0 0 16px rgba(0, 210, 252, 0.6)); 
+            transition: opacity 0.05s ease-in-out;
+        }
+    </style>
+    <script src="nav.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" id="menuOverlay"></div>
+
+    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
+        <div class="px-6 flex flex-col items-center w-full">
+            <div class="w-full aspect-square rounded-3xl bg-white p-4 logo-glow-card flex items-center justify-center overflow-hidden mb-5 transition-all hover:scale-[1.03]">
+                <img src="BIN KỸ NĂNG-01.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="material-symbols-outlined text-background text-6xl hidden">token</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="index.html">
+                <span class="material-symbols-outlined">subtitles</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Morse Code</span>
+            </a>
+            <a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 transition-all" href="semaphore.html">
+                <span class="material-symbols-outlined">sign_language</span>
+                <span class="font-label-md text-xs uppercase tracking-widest font-bold">Semaphore</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="thaythe.html">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Thay thế</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="camranh.html">
+                <span class="material-symbols-outlined">grid_on</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Dời chỗ</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="md:pl-64 pt-1 md:pt-6 min-h-screen w-full">
+        <div class="px-1 md:px-8 py-1 md:py-8 max-w-container-max mx-auto flex flex-col gap-1.5 md:gap-6">
+            
+            <header class="mb-1 md:mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <button class="material-symbols-outlined block md:hidden text-primary transition-colors active:scale-95 text-2xl md:text-3xl" id="menuToggle">menu</button>
+                        <h1 class="font-display-lg text-lg md:text-5xl font-bold text-primary tracking-wide" id="statusHeader">LUYỆN TẬP SEMAPHORE</h1>
+                    </div>
+                </div>
+            </header>
+
+            <div id="subnav-container" data-category="semaphore"></div>
+
+            <div id="practiceModule" class="flex flex-col lg:grid lg:grid-cols-12 gap-1.5 md:gap-6">
+                
+                <section class="order-2 lg:order-1 lg:col-span-8 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col items-center justify-center min-h-[300px] md:min-h-[500px] relative overflow-hidden">
+                        <span class="absolute top-2 left-3 text-[10px] md:text-xs font-label-md text-on-surface-variant uppercase tracking-widest font-bold">TƯ THẾ CỜ SEMAPHORE CHUẨN</span>
+                        <div class="w-full h-[240px] md:h-[420px] flex items-center justify-center bg-black/30 rounded-lg md:rounded-xl mt-4 p-2 overflow-hidden">
+                            <img id="sema-img" src="img_semaphore/ss.png" alt="Semaphore Signal" class="semaphore-img">
+                        </div>
+                    </div>
+
+                    <div class="glass-card flex flex-col relative">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">keyboard</span> VĂN BẢN GỐC
+                            </h2>
+                            <div class="flex items-center gap-1.5">
+                                <button class="p-1 text-on-surface-variant hover:text-primary transition-colors" id="btnShowHide" title="Ẩn/Hiện chữ">
+                                    <span class="material-symbols-outlined text-lg" id="eyeIcon">visibility</span>
+                                </button>
+                                <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewRaw">XEM</button>
+                                <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewTelex">XEM TELEX</button>
+                            </div>
+                        </div>
+                        <textarea class="w-full bg-transparent border-none border-b border-outline-variant focus:ring-0 focus:border-primary text-sm md:text-xl text-on-surface py-1 cipher-glow h-14 md:min-h-[100px] resize-none font-medium" id="inputText" placeholder="Nhập chữ cần truyền tín hiệu..." autocomplete="off" spellcheck="false"></textarea>
+                        <div id="telexPreview" class="hidden">-</div>
+                    </div>
+                </section>
+
+                <section class="order-1 lg:order-2 lg:col-span-4 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col gap-2 md:gap-4">
+                        <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                            <span class="material-symbols-outlined text-sm md:text-base">tune</span> TÙY CHỌN BẢN TIN
+                        </h2>
+                        
+                        <div class="flex flex-col gap-2">
+                            <div>
+                                <label class="text-[10px] md:text-xs font-label-md uppercase text-on-surface-variant block mb-0.5">Chế độ</label>
+                                <select id="modeSelect" class="w-full bg-surface-container-highest border border-white/10 text-on-surface rounded-lg p-1.5 md:p-2.5 text-xs md:text-sm focus:ring-1 focus:ring-primary outline-none">
+                                    <option value="translate" selected>DỊCH SEMAPHORE</option>
+                                    <option value="full">TẠO NGẪU NHIÊN</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1">
+                                    <label class="text-[10px] md:text-xs font-label-md uppercase text-on-surface-variant block mb-0.5">Số từ</label>
+                                    <input type="number" id="wordCountInput" value="5" min="1" max="100" class="w-full bg-surface-container-highest border border-white/10 text-on-surface text-center rounded-lg p-1 md:p-2 text-xs md:text-sm outline-none focus:ring-1 focus:ring-primary"/>
+                                </div>
+                                <button id="btnGenerate" class="h-8 md:h-[40px] mt-4 px-3 bg-primary text-background font-label-md text-[10px] md:text-xs uppercase tracking-wider rounded-lg flex items-center justify-center gap-1 hover:brightness-110 active:scale-95 transition-all shadow-md font-bold">
+                                    <span class="material-symbols-outlined text-xs md:text-sm font-bold">shuffle</span> PHÁT NGẪU NHIÊN
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card flex flex-col gap-2 md:gap-3">
+                        <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                            <span class="material-symbols-outlined text-sm md:text-base">settings_input_component</span> ĐIỀU KHIỂN
+                        </h2>
+                        
+                        <button class="w-full py-2.5 md:py-4 bg-primary text-background font-bold rounded-xl flex flex-col items-center justify-center gap-0.5 md:gap-1 hover:brightness-110 active:scale-[0.98] transition-all group" id="btnPlay">
+                            <span class="material-symbols-outlined text-xl md:text-3xl group-hover:scale-105 transition-transform">play_arrow</span>
+                            <span class="font-label-md text-[10px] md:text-xs uppercase tracking-widest font-bold">PHÁT BẢN TIN</span>
+                        </button>
+
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button id="btnStop" class="py-1.5 md:py-2.5 bg-white/5 border border-white/10 text-xs md:text-sm font-semibold rounded-lg hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all" disabled>DỪNG</button>
+                            <button id="btnReset" class="py-1.5 md:py-2.5 bg-white/5 border border-white/10 text-xs md:text-sm font-semibold rounded-lg hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all">PHÁT LẠI</button>
+                        </div>
+
+                        <div class="flex flex-col gap-1 p-2 md:p-3 bg-black/20 rounded-lg border border-white/5">
+                            <div class="flex justify-between text-[10px] md:text-xs font-mono-data text-on-surface-variant">
+                                <span>TỐC ĐỘ PHÁT:</span>
+                                <span id="speedVal" class="text-primary font-bold">1.2s</span>
+                            </div>
+                            <input type="range" id="speedRange" min="500" max="2500" step="100" value="1200" dir="rtl" class="w-full accent-primary mt-0.5 cursor-pointer">
+                        </div>
+                        
+                        <button id="btnClear" class="w-full py-1.5 md:py-2.5 bg-error-container/40 border border-error/20 text-error hover:bg-error-container/60 text-[10px] md:text-xs font-bold tracking-widest uppercase rounded-lg transition-all">
+                            XÓA BẢN TIN
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md transition-all duration-300" id="infoModal">
+        <div class="bg-surface-container-high border border-primary/30 rounded-2xl w-full max-w-2xl p-6 flex flex-col shadow-2xl">
+            <div class="flex-1 max-h-[60vh] overflow-y-auto text-on-background text-xl md:text-2xl font-mono-data p-4 break-all leading-loose tracking-widest bg-black/30 rounded-xl" id="modalBody"></div>
+            <button class="w-full mt-4 bg-primary text-background font-bold p-3 rounded-xl hover:brightness-110 active:scale-95 transition-all text-sm uppercase tracking-widest" id="btnCloseModal">ĐÓNG WINDOWS</button>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div class="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <script>
+        const semaImg = document.getElementById('sema-img');
+        const input = document.getElementById('inputText');
+        const telexPreview = document.getElementById('telexPreview');
+        const speedRange = document.getElementById('speedRange');
+        const speedVal = document.getElementById('speedVal');
+
+        const btnPlay = document.getElementById('btnPlay');
+        const btnStop = document.getElementById('btnStop');
+        const btnReset = document.getElementById('btnReset');
+        const modeSelect = document.getElementById('modeSelect');
+        const wordCountInput = document.getElementById('wordCountInput');
+        const btnGenerate = document.getElementById('btnGenerate');
+
+        let isPlaying = false, stopRequested = false, isHidden = false, realText = "";
+
+        modeSelect.onchange = () => {
+            if (modeSelect.value === 'translate') {
+                realText = ""; input.value = ""; isHidden = false; updateDisplay();
+            }
+        };
+
+        speedRange.oninput = () => speedVal.innerText = (speedRange.value / 1000).toFixed(1) + 's';
+
+        const preloadImages = () => {
+            const chars = "abcdefghijklmnopqrstuvwxyz".split("");
+            ["start", "ss", ...chars].forEach(char => {
+                const img = new Image();
+                img.src = `img_semaphore/${char}.png`;
+            });
+        };
+        preloadImages();
+
+        function setUIState(playing) {
+            isPlaying = playing;
+            btnPlay.disabled = playing;
+            btnReset.disabled = playing;
+            btnStop.disabled = !playing;
+            if(playing) btnPlay.classList.add('play-active');
+            else btnPlay.classList.remove('play-active');
+        }
+
+        const telexMap = { 'à':'a','á':'a','ả':'a','ã':'a','ạ':'a','ằ':'aw','ắ':'aw','ẳ':'aw','ẵ':'aw','ặ':'aw','ầ':'aa','ấ':'aa','ẩ':'aa','ẫ':'aa','ậ':'aa','è':'e','é':'e','ẻ':'e','ẽ':'e','ẹ':'e','ề':'ee','ế':'ee','ể':'ee','ễ':'ee','ệ':'ee','ì':'i','í':'i','ỉ':'i','ĩ':'i','ị':'i','ò':'o','ó':'o','ỏ':'o','õ':'o','ọ':'o','ồ':'oo','ố':'oo','ổ':'oo','ỗ':'oo','ộ':'oo','ờ':'ow','ớ':'ow','ở':'ow','ỡ':'ow','ợ':'ow','ù':'u','ú':'u','ủ':'u','ũ':'u','ụ':'u','ừ':'uw','ứ':'uw','ử':'uw','ữ':'uw','ự':'uw','ỳ':'y','ý':'y','ỷ':'y','ỹ':'y','ỵ':'y','đ':'dd','â':'aa','ă':'aw','ê':'ee','ô':'oo','ơ':'ow','ư':'uw' };
+        const toneMap = { 'á':'s','à':'f','ả':'r','ã':'x','ạ':'j','ắ':'s','ằ':'f','ẳ':'r','ẵ':'x','ặ':'j','ấ':'s','ầ':'f','ẩ':'r','ẫ':'x','ậ':'j','é':'s','è':'f','ẻ':'r','ẽ':'x','ẹ':'j','ế':'s','ề':'f','ể':'r','ễ':'x','ệ':'j','í':'s','ì':'f','ỉ':'r','ĩ':'x','ị':'j','ó':'s','ò':'f','ỏ':'r','õ':'x','ọ':'j','ồ':'f','ổ':'r','ỗ':'x','ộ':'j','ớ':'s','ờ':'f','ở':'r','ỡ':'x','ợ':'j','ú':'s','ù':'f','ủ':'r','ũ':'x','ụ':'j','ứ':'s','ừ':'f','ử':'r','ữ':'x','ự':'j','ý':'s','ỳ':'f','ỷ':'r','ỹ':'x','ỵ':'j' };
+
+        function toTelexArray(str) {
+            let result = []; const words = str.trim().toLowerCase().split(/\s+/);
+            if(!str.trim()) return [];
+            words.forEach((word, index) => {
+                let newWordChars = [], tones = "";
+                for (let char of word) {
+                    if (telexMap[char]) newWordChars.push(...telexMap[char].split(''));
+                    else if(/[a-z]/.test(char)) newWordChars.push(char);
+                    if (toneMap[char]) tones += toneMap[char];
+                }
+                result.push(...newWordChars, ...tones.split(''));
+                if (index < words.length - 1) result.push('SPACE');
+            });
+            return result;
+        }
+
+        function updateDisplay() {
+            const arr = toTelexArray(realText);
+            const telexFull = arr.map(c => c === 'SPACE' ? '/' : c.toUpperCase()).join(' ');
+            if (isHidden) {
+                input.value = realText.replace(/[^\s]/g, '*');
+                telexPreview.innerText = telexFull.replace(/[^\s/]/g, '*');
+            } else {
+                input.value = realText;
+                telexPreview.innerText = telexFull || "-";
+            }
+        }
+
+        input.oninput = () => { 
+            realText = input.value.toLowerCase(); 
+            isHidden = false; 
+            updateDisplay(); 
+        };
+        
+        document.getElementById('btnShowHide').onclick = () => { isHidden = !isHidden; updateDisplay(); };
+
+        async function playSignalSequence(targetImgElement) {
+            if (!realText.trim() || isPlaying) return;
+            setUIState(true);
+            stopRequested = false;
+            
+            for(let i=0; i<3; i++) {
+                if(stopRequested) break;
+                targetImgElement.src = `img_semaphore/start.png`;
+                await new Promise(r => setTimeout(r, 400));
+                targetImgElement.src = `img_semaphore/ss.png`;
+                await new Promise(r => setTimeout(r, 200));
+            }
+
+            if (!stopRequested) {
+                targetImgElement.src = `img_semaphore/ss.png`;
+                await new Promise(r => setTimeout(r, 600));
+            }
+
+            const sequence = toTelexArray(realText);
+            for (let char of sequence) {
+                if (stopRequested) break;
+                targetImgElement.src = `img_semaphore/${char === 'SPACE' ? 'ss' : char.toLowerCase()}.png`;
+                await new Promise(r => setTimeout(r, parseInt(speedRange.value)));
+                
+                targetImgElement.style.opacity = "0.7"; 
+                await new Promise(r => setTimeout(r, 50)); 
+                targetImgElement.style.opacity = "1";
+            }
+
+            for(let i=0; i<2; i++) {
+                if(stopRequested) break;
+                targetImgElement.src = `img_semaphore/start.png`;
+                await new Promise(r => setTimeout(r, 400));
+                targetImgElement.src = `img_semaphore/ss.png`;
+                await new Promise(r => setTimeout(r, 200));
+            }
+
+            isPlaying = false;
+            setUIState(false);
+            targetImgElement.src = `img_semaphore/ss.png`;
+        }
+
+        btnPlay.onclick = () => playSignalSequence(semaImg);
+        btnStop.onclick = () => { stopRequested = true; isPlaying = false; setUIState(false); semaImg.src = `img_semaphore/ss.png`; };
+        btnReset.onclick = () => { stopRequested = true; isPlaying = false; setUIState(false); setTimeout(() => playSignalSequence(semaImg), 300); };
+        document.getElementById('btnClear').onclick = () => { stopRequested = true; isPlaying = false; realText = ""; isHidden = false; updateDisplay(); setUIState(false); semaImg.src = `img_semaphore/ss.png`; input.value = ""; };
+
+        async function generateRandomText() {
+            try {
+                const response = await fetch('random.txt?v=' + Math.random());
+                const rawText = await response.text();
+                const normalizedText = rawText.normalize('NFC');
+                const cleanRaw = normalizedText.replace(/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?“”指標”‘’"'\r\n\t«»„“]/g, ' ');
+                const allWords = cleanRaw.split(/\s+/)
+                    .map(w => w.trim())
+                    .filter(w => w.length >= 2);
+
+                if (allWords.length === 0) return "";
+                
+                const count = parseInt(wordCountInput.value) || 5;
+                let selected = [];
+                for (let i = 0; i < count; i++) {
+                    selected.push(allWords[Math.floor(Math.random() * allWords.length)]);
+                }
+                return selected.join(' ').toLowerCase();
+            } catch (err) { 
+                alert("Lỗi nạp tệp dữ liệu ngẫu nhiên."); 
+                return ""; 
+            }
+        }
+
+        btnGenerate.onclick = async () => {
+            const txt = await generateRandomText();
+            if(txt) { realText = txt; isHidden = true; updateDisplay(); }
+        };
+
+        const menuToggle = document.getElementById('menuToggle');
+        const overlay = document.getElementById('menuOverlay');
+        
+        menuToggle.onclick = (e) => { 
+            document.body.classList.add('menu-open'); 
+            overlay.classList.remove('hidden'); 
+            e.stopPropagation(); 
+        };
+        overlay.onclick = () => { 
+            document.body.classList.remove('menu-open'); 
+            overlay.classList.add('hidden'); 
+        };
+
+        const modal = document.getElementById('infoModal');
+        const modalBody = document.getElementById('modalBody');
+        document.getElementById('btnViewTelex').onclick = () => { const arr = toTelexArray(realText); const telexStr = arr.map(c => c === 'SPACE' ? '/' : c.toUpperCase()).join(' '); modalBody.innerText = isHidden ? telexStr.replace(/[^\s/]/g, '*') : (telexStr || "-"); modal.classList.remove('hidden'); }
+        document.getElementById('btnViewRaw').onclick = () => { modalBody.innerText = isHidden ? realText.replace(/[^\s]/g, '*') : (realText || "(Trống)"); modal.classList.remove('hidden'); }
+        document.getElementById('btnCloseModal').onclick = () => modal.classList.add('hidden');
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.add('hidden'); });
+    </script>
+    <script src="script_security.js"></script>
+</body>
+</html>

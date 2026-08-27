@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Hệ thống Morse | CIPHER_CORE</title>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+    <link rel="shortcut icon" href="BIN KỸ NĂNG-01.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="output.css" rel="stylesheet">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        .glass-card {
+            background: rgba(31, 31, 39, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.65rem !important;
+            border-radius: 0.5rem !important;
+        }
+        @media (min-width: 768px) {
+            .glass-card {
+                background: rgba(31, 31, 39, 0.6);
+                backdrop-filter: blur(12px);
+                padding: 1.5rem !important;
+                border-radius: 0.75rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        .cipher-glow:focus-within { border-bottom-color: #00f2ff; box-shadow: 0 4px 12px -4px rgba(0, 242, 255, 0.3); }
+        @keyframes pulse-cyan {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 242, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0); }
+        }
+        .play-active { animation: pulse-cyan 1.5s infinite; background-color: #00f2ff !important; color: #13131b !important; }
+        .menu-open aside { transform: translateX(0) !important; }
+        .logo-glow-card { box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); border: 2px solid rgba(0, 242, 255, 0.6); }
+    </style>
+    <script src="nav.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" id="menuOverlay"></div>
+
+    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
+        <div class="px-6 flex flex-col items-center w-full">
+            <div class="w-full aspect-square rounded-3xl bg-white p-4 logo-glow-card flex items-center justify-center overflow-hidden mb-5 transition-all hover:scale-[1.03]">
+                <img src="BIN KỸ NĂNG-01.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="material-symbols-outlined text-background text-6xl hidden">token</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 transition-all" href="index.html">
+                <span class="material-symbols-outlined">subtitles</span>
+                <span class="font-label-md text-xs uppercase tracking-widest font-bold">Morse Code</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="semaphore.html">
+                <span class="material-symbols-outlined">sign_language</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Semaphore</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="thaythe.html">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Thay thế</span>
+            </a>
+            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="camranh.html">
+                <span class="material-symbols-outlined">grid_on</span>
+                <span class="font-label-md text-xs uppercase tracking-widest">Dời chỗ</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="md:pl-64 pt-1 md:pt-6 min-h-screen w-full">
+        <div class="px-1 md:px-8 py-1 md:py-8 max-w-container-max mx-auto flex flex-col gap-1.5 md:gap-6">
+            
+            <header class="mb-1 md:mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <button class="material-symbols-outlined block md:hidden text-primary transition-colors active:scale-95 text-2xl md:text-3xl" id="menuToggle">menu</button>
+                        <h1 class="font-display-lg text-lg md:text-5xl font-bold text-primary tracking-wide" id="statusHeader">LUYỆN TẬP MORSE</h1>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Vị trí đặt dropdown -->
+<div id="subnav-container" data-category="morse"></div>
+
+            <div id="practiceModule" class="flex flex-col lg:grid lg:grid-cols-12 gap-1.5 md:gap-6">
+                
+                <section class="order-1 lg:order-2 lg:col-span-4 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col gap-2 md:gap-4">
+                        <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                            <span class="material-symbols-outlined text-sm md:text-base">tune</span> TÙY CHỌN BẢN TIN
+                        </h2>
+                        
+                        <div class="flex flex-col gap-1.5 md:gap-3">
+                            <div>
+                                <label class="text-[10px] md:text-xs font-label-md uppercase text-on-surface-variant block mb-0.5">Tốc độ phát</label>
+                                <select id="speedSelect" class="w-full bg-surface-container-highest border border-white/10 text-on-surface rounded-lg p-1.5 md:p-2.5 text-xs md:text-sm focus:ring-1 focus:ring-primary outline-none">
+                                    <option value="slow">CHẬM</option>
+                                    <option value="normal" selected>BÌNH THƯỜNG</option>
+                                    <option value="fast">NHANH</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] md:text-xs font-label-md uppercase text-on-surface-variant block mb-0.5">Chế độ</label>
+                                <select id="modeSelect" class="w-full bg-surface-container-highest border border-white/10 text-on-surface rounded-lg p-1.5 md:p-2.5 text-xs md:text-sm focus:ring-1 focus:ring-primary outline-none">
+                                   <option value="translate" selected>DỊCH MORSE</option>
+                                    <option value="group8">LEVEL 1: 8 CHỮ (E I S H T M O CH)</option>
+                                    <option value="group6">LEVEL 2: 6 CHỮ TIẾP THEO (A W J N D B)</option>
+                                    <option value="full">LEVEL 3: FULL CHỮ</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1">
+                                    <label class="text-[10px] md:text-xs font-label-md uppercase text-on-surface-variant block mb-0.5">Số từ</label>
+                                    <input type="number" id="wordCountInput" value="5" min="1" max="100" class="w-full bg-surface-container-highest border border-white/10 text-on-surface text-center rounded-lg p-1 md:p-2 text-xs md:text-sm outline-none focus:ring-1 focus:ring-primary" disabled/>
+                                </div>
+                                <button id="btnGenerate" class="h-8 md:h-[40px] mt-4 px-3 bg-primary-container text-on-primary-container font-label-md text-[10px] md:text-xs uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 hover:brightness-110 active:scale-95 transition-all shadow-md font-bold" disabled>
+                                    <span class="material-symbols-outlined text-xs md:text-sm font-bold">shuffle</span> TẠO NGẪU NHIÊN
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card flex flex-col gap-2 md:gap-3">
+                        <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                            <span class="material-symbols-outlined text-sm md:text-base">settings_input_component</span> PHÁT TÍN HIỆU 
+                        </h2>
+                        
+                        <button class="w-full py-2.5 md:py-4 bg-primary text-background font-bold rounded-xl flex flex-col items-center justify-center gap-0.5 md:gap-1 hover:brightness-110 active:scale-[0.98] transition-all group" id="btnPlay">
+                            <span class="material-symbols-outlined text-xl md:text-3xl group-hover:scale-105 transition-transform">play_arrow</span>
+                            <span class="font-label-md text-[10px] md:text-xs uppercase tracking-widest font-bold">PHÁT BẢN TIN</span>
+                        </button>
+
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button id="btnStop" class="py-1.5 md:py-2.5 bg-white/5 border border-white/10 text-xs md:text-sm font-semibold rounded-lg hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all" disabled>DỪNG</button>
+                            <button id="btnReset" class="py-1.5 md:py-2.5 bg-white/5 border border-white/10 text-xs md:text-sm font-semibold rounded-lg hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all">PHÁT LẠI</button>
+                        </div>
+                        
+                        <button id="btnClear" class="w-full py-1.5 md:py-2.5 bg-error-container/40 border border-error/20 text-error hover:bg-error-container/60 text-[10px] md:text-xs font-bold tracking-widest uppercase rounded-lg transition-all">
+                            XÓA BẢN TIN
+                        </button>
+                    </div>
+                </section>
+
+                <section class="order-2 lg:order-1 lg:col-span-8 flex flex-col gap-1.5 md:gap-6">
+                    <div class="glass-card flex flex-col relative">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">keyboard</span> VĂN BẢN GỐC
+                            </h2>
+                            <div class="flex items-center gap-1.5">
+                                <button class="p-1 text-on-surface-variant hover:text-primary transition-colors" id="btnShowHide" title="Ẩn/Hiện chữ">
+                                    <span class="material-symbols-outlined text-lg" id="eyeIcon">visibility</span>
+                                </button>
+                                <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewRaw">XEM</button>
+                            </div>
+                        </div>
+                        <textarea class="w-full bg-transparent border-none border-b border-outline-variant focus:ring-0 focus:border-primary text-sm md:text-xl text-on-surface py-1 cipher-glow h-14 md:min-h-[100px] resize-none font-medium" id="inputText" placeholder="Nhập văn bản cần xử lý..." autocomplete="off" spellcheck="false"></textarea>
+                    </div>
+
+                    <div class="glass-card flex flex-col">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-secondary flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">translate</span> CHUYỂN ĐỔI TELEX
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnViewTelex">XEM</button>
+                        </div>
+                        <div class="p-2 md:p-4 bg-black/40 border border-white/5 rounded-lg font-mono-data text-sm md:text-xl text-primary font-bold tracking-wider overflow-hidden text-ellipsis whitespace-nowrap" id="telexPreview">-</div>
+                    </div>
+
+                    <div class="glass-card flex flex-col relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-1">
+                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary-fixed-dim flex items-center gap-1.5 font-bold">
+                                <span class="material-symbols-outlined text-sm md:text-base">code</span> MÃ MORSE ĐẦU RA
+                            </h2>
+                            <button class="px-2 py-0.5 bg-white/5 hover:bg-white/10 rounded font-label-md text-[10px] md:text-xs tracking-wider font-bold text-primary" id="btnExpandMorse">XEM MÃ</button>
+                        </div>
+                        <div class="p-2 md:p-4 bg-primary/5 border border-dashed border-primary/30 rounded-lg md:rounded-xl font-mono-data text-lg md:text-2xl tracking-[0.15em] text-primary min-h-[56px] md:min-h-[70px] max-h-[80px] overflow-hidden flex items-center justify-center text-center break-all leading-relaxed" id="outputMorse">
+                            ... --- ...
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md transition-all duration-300" id="infoModal">
+        <div class="bg-surface-container-high border border-primary/30 rounded-2xl w-full max-w-2xl p-6 flex flex-col shadow-2xl">
+            <div class="flex-1 max-h-[60vh] overflow-y-auto text-on-background text-xl md:text-2xl font-mono-data p-4 md:p-6 break-all leading-loose tracking-widest bg-black/30 rounded-xl text-center" id="modalBody">
+                Data Content...
+            </div>
+            <button class="w-full mt-4 bg-primary text-background font-bold p-3 rounded-xl hover:brightness-110 active:scale-95 transition-all text-sm uppercase tracking-widest" id="btnCloseModal">ĐÓNG WINDOWS</button>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div class="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('menuOverlay');
+
+        menuToggle.addEventListener('click', (e) => {
+            document.body.classList.add('menu-open');
+            overlay.classList.remove('hidden');
+            e.stopPropagation();
+        });
+        overlay.addEventListener('click', () => {
+            document.body.classList.remove('menu-open');
+            overlay.classList.add('hidden');
+        });
+
+        const SOUND_PATH = "sounds_morse/";
+        const morseMap = {'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','CH': '----','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.'};
+        
+        const staticPhrases = {
+            group8: [
+                "TIM", "EM", "HOM", "TOM", "CHOM", "CHET", "CHI", "CHO", "MOI", "SOM", 
+                "CHIM", "THI", "THE", "THEM", "THOM", "HIEM", "MOT", "MIET"
+            ],
+            group6: [
+                "HOC", "HIEM", "HEM", "HEN", "HE", "HO", "HOC", "HOA", "HOC", "DEM", "DEN", 
+                "DE", "DO", "DOM", "DON", "ME", "MEN", "MET", "MO", "MOT", "MON", "MOC", 
+                "MAN", "MAT", "MAO", "NAM", "NEN", "NEO", "NET", "NOM", "NO", "OM", "OT", 
+                "TA", "TAM", "TAN", "TEM", "TEN", "THO", "THE", "THEM", "THO", "THAM", "THAN", 
+                "THAO", "THAO", "CHAM", "CHAN", "CHE", "CHEM", "CHEO", "CHO", "CHOM", "CHON", 
+                "CHOE", "CHOA", "CHAI", "DAO", "DA", "DAN", "DAM", "DEM", "DOM", "BAN", "BAM", 
+                "BEO", "BEN", "BEO", "BO", "BON", "BE", "CHAM", "CHON", "THEM", "THAN", "THAO", 
+                "CHEM", "DEN", "DEM", "MON", "MAN", "MOT", "NAM", "BEN", "BAM", "BAN", "TEM", "TEN"
+            ]
+        };
+
+        let realText = "", isHidden = false, isPlaying = false;
+        let speedSettings = { charGap: 350, wordGap: 1000 };
+
+        const normalAudio = new Audio();
+
+        const input = document.getElementById('inputText');
+        const telexPreview = document.getElementById('telexPreview');
+        const output = document.getElementById('outputMorse');
+        const statusHeader = document.getElementById('statusHeader');
+        const btnShowHide = document.getElementById('btnShowHide');
+        const eyeIcon = document.getElementById('eyeIcon');
+        
+        const btnPlay = document.getElementById('btnPlay');
+        const btnStop = document.getElementById('btnStop');
+        const btnReset = document.getElementById('btnReset');
+        const modeSelect = document.getElementById('modeSelect');
+        const wordCountInput = document.getElementById('wordCountInput');
+        const btnGenerate = document.getElementById('btnGenerate');
+
+        function setUIState(playing) {
+            isPlaying = playing;
+            btnPlay.disabled = playing;
+            btnReset.disabled = playing;
+            btnStop.disabled = !playing;
+            
+            const btnPlayLabel = btnPlay.querySelector('span:last-child');
+            const btnPlayIcon = btnPlay.querySelector('span:first-child');
+            
+            if(playing) {
+                btnPlay.classList.add('play-active');
+                btnPlayLabel.textContent = "TRANSMITTING...";
+                btnPlayIcon.textContent = "subtitles";
+            } else {
+                btnPlay.classList.remove('play-active');
+                btnPlayLabel.textContent = "PHÁT BẢN TIN";
+                btnPlayIcon.textContent = "play_arrow";
+            }
+        }
+
+        function toTelex(str) {
+            const charMap = {'à':'a','á':'a','ả':'a','ã':'a','ạ':'a','ằ':'aw','ắ':'aw','ẳ':'aw','ẵ':'aw','ặ':'aw','ầ':'aa','ấ':'aa','ẩ':'aa','ẫ':'aa','ậ':'aa','è':'e','é':'e','ẻ':'e','ẽ':'e','ẹ':'e','ề':'ee','ế':'ee','ể':'ee','ễ':'ee','ệ':'ee','ì':'i','í':'i','ỉ':'i','ĩ':'i','ị':'i','ò':'o','ó':'o','ỏ':'o','õ':'o','ọ':'o','ồ':'oo','ố':'oo','ổ':'oo','ỗ':'oo','ộ':'oo','ờ':'ow','ớ':'ow','ở':'ow','ỡ':'ow','ợ':'ow','ù':'u','ú':'u','ủ':'u','ũ':'u','ụ':'u','ừ':'uw','ứ':'uw','ử':'uw','ữ':'uw','ự':'uw','ỳ':'y','ý':'y','ỷ':'y','ỹ':'y','ị':'y','đ':'dd','â':'aa','ă':'aw','ê':'ee','ô':'oo','ơ':'ow','ư':'uw'};
+            const toneMap = {'á':'s','à':'f','ả':'r','ã':'x','ạ':'j','ắ':'s','ằ':'f','ẳ':'r','ẵ':'x','ặ':'j','ấ':'s','ầ':'f','ẩ':'r','ẫ':'x','ậ':'j','é':'s','è':'f','ẻ':'r','ẽ':'x','ẹ':'j','ế':'s','ề':'f','ể':'r','ễ':'x','ệ':'j','í':'s','ì':'f','ỉ':'r','ĩ':'x','ị':'j','ó':'s','ò':'f','ỏ':'r','õ':'x','ọ':'j','ố':'s','ồ':'f','ổ':'r','ỗ':'x','ộ':'j','ớ':'s','ờ':'f','ở':'r','ỡ':'x','ợ':'j','ú':'s','ù':'f','ủ':'r','ũ':'x','ụ':'j','ứ':'s','ừ':'f','ử':'r','ữ':'x','ự':'j','ý':'s','ỳ':'f','ỷ':'r','ỹ':'x','ỵ':'j'};
+            
+            let cleanStr = str.toLowerCase().replace(/[^a-z0-9àáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹịđâăêôơư\s]/g, '');
+
+            return cleanStr.split(' ').map(word => {
+                let newWord = ""; let tones = "";
+                for (let char of word) {
+                    if (charMap[char]) newWord += charMap[char]; else newWord += char;
+                    if (toneMap[char]) tones += toneMap[char];
+                }
+                return (newWord + tones).toUpperCase().replace(/[^A-Z0-9]/g, '');
+            }).filter(word => word.trim().length > 0).join(' ');
+        }
+
+        function wordToMorse(word) {
+            let wordMorse = [];
+            let i = 0;
+            while (i < word.length) {
+                if (word[i] === 'C' && word[i+1] === 'H') {
+                    wordMorse.push(morseMap['CH']);
+                    i += 2;
+                } else {
+                    wordMorse.push(morseMap[word[i]] || '');
+                    i += 1;
+                }
+            }
+            return wordMorse.join(' ');
+        }
+
+        function updateDisplay() {
+            const telexText = toTelex(realText);
+            const fullMorseSymbols = telexText.split(' ').map(word => wordToMorse(word)).join(' / ');
+            
+            if (isHidden) {
+                const hiddenFull = fullMorseSymbols.replace(/[^\s/]/g, '*');
+                output.setAttribute('data-full-morse', hiddenFull || "... --- ...");
+            } else {
+                output.setAttribute('data-full-morse', fullMorseSymbols || "... --- ...");
+            }
+
+            if (telexText.trim()) {
+                const wordsArray = telexText.split(' ');
+                const previewWords = wordsArray.slice(0, 3).map(word => wordToMorse(word));
+                
+                let previewContent = previewWords.join(' / ');
+                let hasDots = false;
+                if (wordsArray.length > 3) {
+                    previewContent += ' ...';
+                    hasDots = true;
+                }
+                
+                if (isHidden) {
+                    input.value = realText.replace(/[^\s]/g, '*');
+                    telexPreview.innerText = telexText.replace(/[^\s/]/g, '*');
+                    
+                    if (hasDots) {
+                        const coreMorse = previewWords.join(' / ');
+                        output.innerText = coreMorse.replace(/[^\s/]/g, '*') + ' ...';
+                    } else {
+                        output.innerText = previewContent.replace(/[^\s/]/g, '*');
+                    }
+                } else {
+                    input.value = realText;
+                    telexPreview.innerText = telexText;
+                    output.innerText = previewContent;
+                }
+            } else {
+                input.value = isHidden ? realText.replace(/[^\s]/g, '*') : realText;
+                telexPreview.innerText = "-";
+                output.innerText = "... --- ...";
+            }
+        }
+
+        input.addEventListener('input', () => { 
+            realText = input.value.toLowerCase(); 
+            isHidden = false; 
+            statusHeader.innerText = "LUYỆN TẬP MORSE"; 
+            updateDisplay(); 
+        });
+        
+        btnShowHide.onclick = () => { 
+            isHidden = !isHidden; 
+            updateDisplay(); 
+        };
+
+        modeSelect.onchange = () => {
+            if (modeSelect.value === 'translate') {
+                wordCountInput.disabled = true;
+                btnGenerate.disabled = true;
+                realText = "";
+                isHidden = false;
+                statusHeader.innerText = "LUYỆN TẬP MORSE";
+                updateDisplay();
+            } else {
+                wordCountInput.disabled = false;
+                btnGenerate.disabled = false;
+            }
+        };
+
+        const modal = document.getElementById('infoModal');
+        const modalBody = document.getElementById('modalBody');
+        
+        document.getElementById('btnViewTelex').onclick = () => { 
+            const telex = toTelex(realText); 
+            modalBody.innerText = isHidden ? telex.replace(/[^\s/]/g, '*') : (telex || "-"); 
+            modal.classList.remove('hidden'); 
+            modalBody.scrollTop = 0;
+        }
+        document.getElementById('btnViewRaw').onclick = () => { 
+            modalBody.innerText = isHidden ? realText.replace(/[^\s]/g, '*') : (realText || "(Trống)"); 
+            modal.classList.remove('hidden'); 
+            modalBody.scrollTop = 0;
+        }
+        document.getElementById('btnExpandMorse').onclick = () => { 
+            modalBody.innerText = output.getAttribute('data-full-morse'); 
+            modal.classList.remove('hidden'); 
+            modalBody.scrollTop = 0;
+        }
+        document.getElementById('btnCloseModal').onclick = () => modal.classList.add('hidden');
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('btnGenerate').onclick = async () => {
+            const currentMode = modeSelect.value;
+            if (currentMode === 'translate') return;
+
+            const count = parseInt(wordCountInput.value) || 5;
+            let selected = [];
+
+            if (currentMode === 'full') {
+                try {
+                    const response = await fetch('random.txt?v=' + Math.random());
+                    const rawText = await response.text();
+                    
+                    const normalizedText = rawText.normalize('NFC');
+                    const cleanRaw = normalizedText.replace(/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?“”‘’"']/g, ' ');
+                    const allWords = cleanRaw.split(/\s+/)
+                        .map(w => w.trim())
+                        .filter(w => w.length >= 2);
+                        
+                    for (let i = 0; i < count; i++) {
+                        selected.push(allWords[Math.floor(Math.random() * allWords.length)]);
+                    }
+                    realText = selected.join(' ').toLowerCase(); 
+                    statusHeader.innerText = "LEVEL 3: FULL CHỮ";
+                } catch (err) { 
+                    alert("Lỗi tải file cấu trúc random.txt"); 
+                    return;
+                }
+            } else {
+                const sourcePool = staticPhrases[currentMode];
+                for (let i = 0; i < count; i++) {
+                    selected.push(sourcePool[Math.floor(Math.random() * sourcePool.length)]);
+                }
+                realText = selected.join(' ').toLowerCase(); 
+                statusHeader.innerText = currentMode === 'group8' ? "LEVEL 1: E I S H T M O CH" : "LEVEL 2: A W J N D B";
+            }
+
+            isHidden = true; 
+            updateDisplay();
+        };
+
+        document.getElementById('speedSelect').onchange = (e) => {
+            const val = e.target.value;
+            if(val === 'slow') speedSettings = { charGap: 1000, wordGap: 1600 };
+            else if(val === 'normal') speedSettings = { charGap: 350, wordGap: 1000 };
+            else if(val === 'fast') speedSettings = { charGap: 100, wordGap: 500 };
+        };
+
+        async function playAudioFile(fileName) {
+            return new Promise((resolve) => {
+                if (!isPlaying) { resolve(); return; }
+                normalAudio.src = SOUND_PATH + fileName;
+                normalAudio.currentTime = 0;
+                normalAudio.play().catch(() => resolve());
+                normalAudio.onended = () => resolve();
+            });
+        }
+
+        async function startPlaying() {
+            if (isPlaying) return;
+            const text = toTelex(realText);
+            if (!text.trim()) return;
+
+            normalAudio.play().catch(() => {}); normalAudio.pause();
+
+            setUIState(true);
+
+            await new Promise(r => setTimeout(r, 400));
+            await playAudioFile("AR.mp3");
+            await new Promise(r => setTimeout(r, 500));
+
+            const words = text.split(' ');
+            for (let i = 0; i < words.length; i++) {
+                if (!isPlaying) break;
+                
+                let word = words[i];
+                let j = 0;
+                while (j < word.length) {
+                    if (!isPlaying) break;
+                    
+                    if (word[j] === 'C' && word[j+1] === 'H') {
+                        await playAudioFile("CH.mp3");
+                        j += 2;
+                    } else {
+                        if (morseMap[word[j]]) { 
+                            await playAudioFile(word[j] + ".mp3"); 
+                        }
+                        j += 1;
+                    }
+                    await new Promise(r => setTimeout(r, speedSettings.charGap));
+                }
+                if (i < words.length - 1) await new Promise(r => setTimeout(r, speedSettings.wordGap));
+            }
+            if (isPlaying) { 
+                await new Promise(r => setTimeout(r, 600)); 
+                await playAudioFile("NW.mp3"); 
+            }
+            stopPlaying();
+        }
+
+        function stopPlaying() { 
+            isPlaying = false; 
+            try {
+                normalAudio.pause();
+                normalAudio.currentTime = 0;
+            } catch(e){}
+            setUIState(false); 
+        }
+
+        btnPlay.onclick = startPlaying;
+        btnStop.onclick = stopPlaying;
+        btnReset.onclick = () => { stopPlaying(); setTimeout(startPlaying, 300); };
+        document.getElementById('btnClear').onclick = () => { 
+            stopPlaying(); 
+            realText = ""; 
+            isHidden = false; 
+            statusHeader.innerText = "LUYỆN TẬP MORSE"; 
+            updateDisplay(); 
+        };
+    </script>
+    <script src="script_security.js"></script>
+</body>
+</html>
