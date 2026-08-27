@@ -199,15 +199,7 @@
 
         speedRange.oninput = () => speedVal.innerText = (speedRange.value / 1000).toFixed(1) + 's';
 
-        const preloadImages = () => {
-            const chars = "abcdefghijklmnopqrstuvwxyz".split("");
-            ["start", "ss", ...chars].forEach(char => {
-                const img = new Image();
-                img.src = `img_semaphore/${char}.png`;
-            });
-        };
-        preloadImages();
-
+        
         function setUIState(playing) {
             isPlaying = playing;
             btnPlay.disabled = playing;
