@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="BIN KỸ NĂNG-01.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     
-   <link href="output.css" rel="stylesheet">
+    <link href="output.css" rel="stylesheet">
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         
@@ -59,38 +59,15 @@
             font-weight: 900;
         }
     </style>
+    <script src="nav.js"></script>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
 
     <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" id="menuOverlay"></div>
 
-    <!-- SIDEBAR NAVIGATION -->
-    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-r-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
-        <div class="px-6 flex flex-col items-center w-full">
-            <div class="w-full aspect-square rounded-3xl bg-white p-4 logo-glow-card flex items-center justify-center overflow-hidden mb-5 transition-all hover:scale-[1.03]">
-                <img src="BIN KỸ NĂNG-01.png" alt="Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <span class="material-symbols-outlined text-background text-6xl hidden">token</span>
-            </div>
-        </div>
-        
-        <nav class="flex-1 space-y-1">
-            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="index.html">
-                <span class="material-symbols-outlined">subtitles</span>
-                <span class="font-label-md text-xs uppercase tracking-widest">Morse Code</span>
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="semaphore.html">
-                <span class="material-symbols-outlined">sign_language</span>
-                <span class="font-label-md text-xs uppercase tracking-widest">Semaphore</span>
-            </a>
-            <a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="thaythe.html">
-                <span class="material-symbols-outlined">swap_horiz</span>
-                <span class="font-label-md text-xs uppercase tracking-widest">Thay thế</span>
-            </a>
-            <a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 transition-all font-bold" href="camranh.html">
-                <span class="material-symbols-outlined">grid_on</span>
-                <span class="font-label-md text-xs uppercase tracking-widest">Dời chỗ </span>
-            </a>
-        </nav>
+    <!-- SIDEBAR NAVIGATION TỰ ĐỘNG RENDER TỪ nav.js -->
+    <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 -translate-x-full md:translate-x-0 flex flex-col bg-surface-container-low/90 backdrop-blur-xl border-r border-white/10 shadow-2xl pt-8 pb-8 z-40 transition-transform duration-300 overflow-y-auto">
+        <div id="sidebar-container" class="flex flex-col h-full"></div>
     </aside>
 
     <!-- MAIN CANVAS -->
@@ -106,11 +83,8 @@
                 </div>
             </header>
 
-            <div class="mb-1 md:mb-2 max-w-md">
-                <select id="cipherType" class="w-full bg-surface-container-high border border-primary/20 text-primary font-bold rounded-lg p-2 md:p-3 text-xs md:text-sm focus:ring-1 focus:ring-primary outline-none cursor-pointer">
-                    <option value="doicho" selected>MẬT THƯ CAM RANH </option>
-                </select>
-            </div>
+            <!-- Dropdown Item 1 / Item 2 tự động render từ nav.js -->
+            <div id="subnav-container" data-subnav="camranh"></div>
 
             <div class="flex flex-col lg:grid lg:grid-cols-12 gap-1.5 md:gap-6">
                 
@@ -192,7 +166,6 @@
     </div>
 
     <script>
-        const sidebar = document.getElementById('sidebar');
         const menuToggle = document.getElementById('menuToggle');
         const overlay = document.getElementById('menuOverlay');
 
@@ -205,7 +178,7 @@
         const patternsOutput = document.getElementById('patternsOutput');
 
         const telexMap = { 'à':'a','á':'a','ả':'a','ã':'a','ạ':'a','ằ':'aw','ắ':'aw','ẳ':'aw','ẵ':'aw','ặ':'aw','ầ':'aa','ấ':'aa','ẩ':'aa','ẫ':'aa','ậ':'aa','è':'e','é':'e','ẻ':'e','ẽ':'e','ẹ':'e','ề':'ee','ế':'ee','ể':'ee','ễ':'ee','ệ':'ee','ì':'i','í':'i','ỉ':'i','ĩ':'i','ị':'i','ò':'o','ó':'o','ỏ':'o','õ':'o','ọ':'o','ồ':'oo','ố':'oo','ổ':'oo','ỗ':'oo','ộ':'oo','ờ':'ow','ớ':'ow','ở':'ow','ỡ':'ow','ợ':'ow','ù':'u','ú':'u','ủ':'u','ũ':'u','ụ':'u','ừ':'uw','ứ':'uw','ử':'uw','ữ':'uw','ự':'uw','ỳ':'y','ý':'y','ỷ':'y','ỹ':'y','ỵ':'y','đ':'dd','â':'aa','ă':'aw','ê':'ee','ô':'oo','ơ':'ow','ư':'uw' };
-        const toneMap = { 'á':'s','à':'f','ả':'r','ã':'x','ạ':'j','ắ':'s','ằ':'f','ẳ':'r','ẵ':'x','ặ':'j','ấ':'s','ầ':'f','ẩ':'r','ẫ':'x','ậ':'j','é':'s','è':'f','ẻ':'r','ẽ':'x','ẹ':'j','ế':'s','ề':'f','ể':'r','ễ':'x','ệ':'j','í':'s','ì':'f','ỉ':'r','ĩ':'x','ị':'j','ó':'s','ò':'f','ỏ':'r','õ':'x','ọ':'j','ố':'s','ồ':'f','ổ':'r','ỗ':'x','ộ':'j','ú':'s','ù':'f','ủ':'r','ũ':'x','ụ':'j','ứ':'s','ừ':'f','ử':'r','ữ':'x','ự':'j','ý':'s','ỳ':'f','ỷ':'r','ỹ':'x','ỵ':'j' };
+        const toneMap = { 'á':'s','à':'f','ả':'r','ã':'x','ạ':'j','ắ':'s','ằ':'f','ẳ':'r','ẵ':'x','ặ':'j','ấ':'s','ầ':'f','ẩ':'r','ẫ':'x','ậ':'j','é':'s','è':'f','ẻ':'r','ẽ':'x','ẹ':'j','ế':'s','ề':'f','ể':'r','ễ':'x','ệ':'j','í':'s','ì':'f','ỉ':'r','ĩ':'x','ị':'j','ó':'s','ò':'f','ỏ':'r','õ':'x','ọ':'j','ố':'s','ồ':'f','ổ':'r','ỗ':'x','ộ':'j','ớ':'s','ờ':'f','ở':'r','ỡ':'x','ợ':'j','ú':'s','ù':'f','ủ':'r','ũ':'x','ụ':'j','ứ':'s','ừ':'f','ử':'r','ữ':'x','ự':'j','ý':'s','ỳ':'f','ỷ':'r','ỹ':'x','ỵ':'j' };
 
         function toTelexArray(str) {
             let result = []; const words = str.trim().toLowerCase().split(/\s+/);
@@ -222,7 +195,6 @@
             return result;
         }
 
-        /* THUẬT TOÁN SINH HÀNG LOẠT TRƯỜNG HỢP TOÀN DIỆN */
         function generatePatterns(matrix) {
             const R = matrix.length;
             if (R === 0) return [];
@@ -231,19 +203,14 @@
 
             let list = [];
 
-            // --- GIAI ĐOẠN 1: 8 TRƯỜNG HỢP NGANG / DỌC / ZIGZAG XUÔI VÀ NGƯỢC ---
-            
-            // TH1: Trái -> Phải (Từ Trên xuống)
             let th1 = "";
             for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) if (matrix[r][c]) th1 += matrix[r][c];
             list.push({ title: "TH1: Trái ➔ Phải (Từ Trên ➔ Dưới)", text: th1 });
 
-            // TH2: Phải -> Trái (Từ Trên xuống)
             let th2 = "";
             for (let r = 0; r < R; r++) for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th2 += matrix[r][c];
             list.push({ title: "TH2: Phải ➔ Trái (Từ Trên ➔ Dưới)", text: th2 });
 
-            // TH3: Zigzag (Trái->Phải rồi Phải->Trái, Từ Trên xuống)
             let th3 = "";
             for (let r = 0; r < R; r++) {
                 if (r % 2 === 0) { for (let c = 0; c < C; c++) if (matrix[r][c]) th3 += matrix[r][c]; }
@@ -251,7 +218,6 @@
             }
             list.push({ title: "TH3: Zigzag Ziczac (Trên ➔ Dưới: Trái-Phải / Phải-Trái)", text: th3 });
 
-            // TH4: Zigzag ngược (Phải->Trái rồi Trái->Phải, Từ Trên xuống)
             let th4 = "";
             for (let r = 0; r < R; r++) {
                 if (r % 2 === 0) { for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th4 += matrix[r][c]; }
@@ -259,17 +225,14 @@
             }
             list.push({ title: "TH4: Zigzag Ziczac Ngược (Trên ➔ Dưới: Phải-Trái / Trái-Phải)", text: th4 });
 
-            // TH5: Trái -> Phải (Từ Dưới lên Trên)
             let th5 = "";
             for (let r = R - 1; r >= 0; r--) for (let c = 0; c < C; c++) if (matrix[r][c]) th5 += matrix[r][c];
             list.push({ title: "TH5: Trái ➔ Phải (Từ Dưới ➔ Trên)", text: th5 });
 
-            // TH6: Phải -> Trái (Từ Dưới lên Trên)
             let th6 = "";
             for (let r = R - 1; r >= 0; r--) for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th6 += matrix[r][c];
             list.push({ title: "TH6: Phải ➔ Trái (Từ Dưới ➔ Trên)", text: th6 });
 
-            // TH7: Zigzag (Trái->Phải rồi Phải->Trái, Từ Dưới lên)
             let th7 = "";
             for (let i = 0; i < R; i++) {
                 let r = R - 1 - i;
@@ -278,7 +241,6 @@
             }
             list.push({ title: "TH7: Zigzag Ziczac (Dưới ➔ Trên: Trái-Phải / Phải-Trái)", text: th7 });
 
-            // TH8: Zigzag ngược (Phải->Trái rồi Trái->Phải, Từ Dưới lên)
             let th8 = "";
             for (let i = 0; i < R; i++) {
                 let r = R - 1 - i;
@@ -286,127 +248,6 @@
                 else { for (let c = 0; c < C; c++) if (matrix[r][c]) th8 += matrix[r][c]; }
             }
             list.push({ title: "TH8: Zigzag Ziczac Ngược (Dưới ➔ Trên: Phải-Trái / Trái-Phải)", text: th8 });
-
-
-            // --- GIAI ĐOẠN 2: XOẮN ỐC TỪ TRONG RA NGOÀI THEO CÁC HƯỚNG ---
-            const midR = Math.floor(R / 2);
-            const midC = Math.floor(C / 2);
-            const dirs = [
-                { dr: [0, 1, 0, -1], dc: [1, 0, -1, 0], name: "Tâm ➔ Phải ➔ Dưới ➔ Trái ➔ Trên" },
-                { dr: [1, 0, -1, 0], dc: [0, -1, 0, 1], name: "Tâm ➔ Dưới ➔ Trái ➔ Trên ➔ Phải" },
-                { dr: [0, -1, 0, 1], dc: [-1, 0, 1, 0], name: "Tâm ➔ Trái ➔ Trên ➔ Phải ➔ Dưới" },
-                { dr: [-1, 0, 1, 0], dc: [0, 1, 0, -1], name: "Tâm ➔ Trên ➔ Phải ➔ Dưới ➔ Trái" }
-            ];
-
-            dirs.forEach((d, idx) => {
-                let res = [];
-                let r = midR, c = midC;
-                let visited = Array.from({ length: R }, () => Array(C).fill(false));
-                if (r >= 0 && r < R && c >= 0 && c < C) {
-                    visited[r][c] = true;
-                    if (matrix[r][c]) res.push(matrix[r][c]);
-                }
-                
-                let stepLen = 1;
-                let dirIdx = 0;
-                let totalCells = R * C;
-                
-                while (res.length < totalCells) {
-                    for (let repeat = 0; repeat < 2; repeat++) {
-                        for (let s = 0; s < stepLen; s++) {
-                            r += d.dr[dirIdx];
-                            c += d.dc[dirIdx];
-                            if (r >= 0 && r < R && c >= 0 && c < C && !visited[r][c]) {
-                                visited[r][c] = true;
-                                if (matrix[r][c]) res.push(matrix[r][c]);
-                            }
-                        }
-                        dirIdx = (dirIdx + 1) % 4;
-                    }
-                    stepLen++;
-                    if (stepLen > Math.max(R, C) * 2) break;
-                }
-                list.push({ title: `TH XOẮN ỐC TỪ TRONG RA (${idx + 1}): ${d.name}`, text: res.join('') });
-            });
-
-
-            // --- GIAI ĐOẠN 3: XOẮN ỐC TỪ NGOÀI VÀO TRONG TỪ 4 ĐỈNH GÓC ---
-            function getSpiralIn(top, bottom, left, right, startCorner) {
-                let res = "";
-                let t = top, b = bottom, l = left, r = right;
-                while (t <= b && l <= r) {
-                    if (startCorner === 'TL') {
-                        for (let c = l; c <= r; c++) if (matrix[t][c]) res += matrix[t][c]; t++;
-                        for (let row = t; row <= b; row++) if (matrix[row][r]) res += matrix[row][r]; r--;
-                        if (t <= b) { for (let c = r; c >= l; c--) if (matrix[b][c]) res += matrix[b][c]; b--; }
-                        if (l <= r) { for (let row = b; row >= t; row--) if (matrix[row][l]) res += matrix[row][l]; l++; }
-                    } else if (startCorner === 'TR') {
-                        for (let row = t; row <= b; row++) if (matrix[row][r]) res += matrix[row][r]; r--;
-                        for (let c = r; c >= l; c--) if (matrix[b][c]) res += matrix[b][c]; b--;
-                        if (t <= b) { for (let row = b; row >= t; row--) if (matrix[row][l]) res += matrix[row][l]; l++; }
-                        if (l <= r) { for (let c = l; c <= r; c++) if (matrix[t][c]) res += matrix[t][c]; t++; }
-                    } else if (startCorner === 'BR') {
-                        for (let c = r; c >= l; c--) if (matrix[b][c]) res += matrix[b][c]; b--;
-                        for (let row = b; row >= t; row--) if (matrix[row][l]) res += matrix[row][l]; l++;
-                        if (t <= b) { for (let c = l; c <= r; c++) if (matrix[t][c]) res += matrix[t][c]; t++; }
-                        if (l <= r) { for (let row = t; row <= b; row++) if (matrix[row][r]) res += matrix[row][r]; r--; }
-                    } else if (startCorner === 'BL') {
-                        for (let row = b; row >= t; row--) if (matrix[row][l]) res += matrix[row][l]; l++;
-                        for (let c = l; c <= r; c++) if (matrix[t][c]) res += matrix[t][c]; t++;
-                        if (t <= b) { for (let row = t; row <= b; row++) if (matrix[row][r]) res += matrix[row][r]; r--; }
-                        if (l <= r) { for (let c = r; c >= l; c--) if (matrix[b][c]) res += matrix[b][c]; b--; }
-                    }
-                }
-                return res;
-            }
-
-            list.push({ title: "TH XOẮN ỐC VÀO TRONG: Từ Đỉnh Trái-Trên (Top-Left)", text: getSpiralIn(0, R - 1, 0, C - 1, 'TL') });
-            list.push({ title: "TH XOẮN ỐC VÀO TRONG: Từ Đỉnh Phải-Trên (Top-Right)", text: getSpiralIn(0, R - 1, 0, C - 1, 'TR') });
-            list.push({ title: "TH XOẮN ỐC VÀO TRONG: Từ Đỉnh Phải-Dưới (Bottom-Right)", text: getSpiralIn(0, R - 1, 0, C - 1, 'BR') });
-            list.push({ title: "TH XOẮN ỐC VÀO TRONG: Từ Đỉnh Trái-Dưới (Bottom-Left)", text: getSpiralIn(0, R - 1, 0, C - 1, 'BL') });
-
-
-            // --- GIAI ĐOẠN 4: QUÉT MƯA RƠI CHÉO TỪ 4 ĐỈNH (TRÊN XUỐNG VÀ DƯỚI LÊN) ---
-            
-            // 1. Mưa rơi từ Trái-Trên (Top-Left) -> Trên xuống
-            let rainTL_TD = "";
-            for (let k = 0; k < R + C - 1; k++) {
-                for (let r = 0; r < R; r++) {
-                    let c = k - r;
-                    if (c >= 0 && c < C && matrix[r][c]) rainTL_TD += matrix[r][c];
-                }
-            }
-            list.push({ title: "TH MƯA RƠI CHÉO: Góc Trái-Trên (Quét Trên ➔ Dưới)", text: rainTL_TD });
-
-            // 2. Mưa rơi từ Trái-Trên (Top-Left) -> Dưới lên
-            let rainTL_BU = "";
-            for (let k = 0; k < R + C - 1; k++) {
-                for (let r = R - 1; r >= 0; r--) {
-                    let c = k - r;
-                    if (c >= 0 && c < C && matrix[r][c]) rainTL_BU += matrix[r][c];
-                }
-            }
-            list.push({ title: "TH MƯA RƠI CHÉO: Góc Trái-Trên (Quét Dưới ➔ Trên)", text: rainTL_BU });
-
-            // 3. Mưa rơi từ Phải-Trên (Top-Right) -> Trên xuống
-            let rainTR_TD = "";
-            for (let k = 0; k < R + C - 1; k++) {
-                for (let r = 0; r < R; r++) {
-                    let c = C - 1 - (k - r);
-                    if (c >= 0 && c < C && matrix[r][c]) rainTR_TD += matrix[r][c];
-                }
-            }
-            list.push({ title: "TH MƯA RƠI CHÉO: Góc Phải-Trên (Quét Trên ➔ Dưới)", text: rainTR_TD });
-
-            // 4. Mưa rơi từ Phải-Trên (Top-Right) -> Dưới lên
-            let rainTR_BU = "";
-            for (let k = 0; k < R + C - 1; k++) {
-                for (let r = R - 1; r >= 0; r--) {
-                    let c = C - 1 - (k - r);
-                    if (c >= 0 && c < C && matrix[r][c]) rainTR_BU += matrix[r][c];
-                }
-            }
-            list.push({ title: "TH MƯA RƠI CHÉO: Góc Phải-Trên (Quét Dưới ➔ Trên)", text: rainTR_BU });
 
             return list;
         }
@@ -442,7 +283,6 @@
                 }
             });
 
-            // 1. Dựng HTML ma trận
             let html = '<table class="matrix-table"><thead><tr>';
             keyChars.forEach(c => html += `<th class="th-char">${c}</th>`);
             html += '</tr><tr>';
@@ -457,18 +297,14 @@
             
             tableGrid.innerHTML = html;
 
-            // Bật/Tắt tô màu nổi bật khi bấm/chạm từng ô
             const tableElement = tableGrid.querySelector('.matrix-table');
             if (tableElement) {
                 tableElement.onclick = (e) => {
                     const cell = e.target.closest('td');
-                    if (cell) {
-                        cell.classList.toggle('cell-active');
-                    }
+                    if (cell) cell.classList.toggle('cell-active');
                 };
             }
 
-            // 2. Sinh các chuỗi văn bản theo hàng loạt quy luật hướng quét
             const patterns = generatePatterns(matrix);
             let pHtml = "";
             patterns.forEach((p, idx) => {
@@ -493,7 +329,6 @@
         inputKey.oninput = solve;
         inputText.oninput = solve;
 
-        // Modal xử lý và Lắng nghe Nút XEM ở từng trường hợp
         const modal = document.getElementById('infoModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalBody = document.getElementById('modalBody');
@@ -508,20 +343,14 @@
         document.getElementById('btnClose').onclick = () => modal.classList.add('hidden');
         modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.add('hidden'); });
 
-        // Event Delegation để bắt sự kiện click nút XEM trên từng trường hợp được sinh ra
         patternsOutput.addEventListener('click', (e) => {
             const btn = e.target.closest('.btn-view-pattern');
             if (btn) {
-                const title = btn.getAttribute('data-title');
-                const text = btn.getAttribute('data-text');
-                openModal(title, text);
+                openModal(btn.getAttribute('data-title'), btn.getAttribute('data-text'));
             }
         });
 
-        document.getElementById('btnClear').onclick = () => { 
-            inputText.value = ""; 
-            solve(); 
-        };
+        document.getElementById('btnClear').onclick = () => { inputText.value = ""; solve(); };
 
         solve();
     </script>
