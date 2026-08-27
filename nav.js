@@ -5,12 +5,12 @@ const NAVIGATION_CONFIG = {
         icon: "radar",
         items: [
             { 
-                id: "morse", 
-                label: "Morse Code", 
-                icon: "subtitles", 
-                defaultPage: "index.html",
-                pages: ["index.html", "learn.html"] 
-            },
+    id: "morse", 
+    label: "Morse Code", 
+    icon: "subtitles", 
+    defaultPage: "morse.html", // Đổi từ index.html thành morse.html
+    pages: ["morse.html", "learn.html", "index_2.html"] 
+},
             { 
                 id: "semaphore", 
                 label: "Semaphore", 
@@ -25,12 +25,12 @@ const NAVIGATION_CONFIG = {
         icon: "enhanced_encryption",
         items: [
             { 
-                id: "thaythe", 
-                label: "Thay thế", 
-                icon: "swap_horiz", 
-                defaultPage: "thaythe.html",
-                pages: ["thaythe.html", "mt_toa_do.html", "mt_bang_hang_cot.html", "nhatrang.html"] 
-            },
+    id: "thaythe", 
+    label: "Thay thế", 
+    icon: "swap_horiz", 
+    defaultPage: "index.html", // Đã đổi từ thaythe.html thành index.html
+    pages: ["index.html", "thaythe_2.html", "mt_toa_do.html", "mt_bang_hang_cot.html", "nhatrang.html"] 
+},
             { 
                 id: "camranh", 
                 label: "Dời chỗ", 
