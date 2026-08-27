@@ -59,42 +59,34 @@
             <div id="subnav-container" data-subnav="semaphore"></div>
 
             <div id="learnModule" class="flex flex-col gap-6 w-full">
-                <div class="glass-card">
-                    <h2 class="font-label-md text-xs md:text-base uppercase tracking-widest text-primary flex items-center gap-1.5 mb-3 md:mb-6 font-bold">
-                        <span class="material-symbols-outlined text-sm md:text-base">menu_book</span> BẢNG TRA CỨU SEMAPHORE (CHỮ & SỐ)
-                    </h2>
-                    <div id="learnGrid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 md:gap-4"></div>
+    <div class="glass-card">
+        <h2 class="font-label-md text-xs md:text-base uppercase tracking-widest text-primary flex items-center gap-1.5 mb-3 md:mb-6 font-bold">
+            <span class="material-symbols-outlined text-sm md:text-base">menu_book</span> BẢNG TRA CỨU SEMAPHORE (CHỮ & SỐ)
+        </h2>
+        <div id="semaListGrid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 md:gap-4"></div>
+    </div>
+</div>
 
 <script>
-    const alphaList = "abcdefghijklmnopqrstuvwxyz".split("");
-    const numMap = {
-        'a': '1', 'b': '2', 'c': '3', 'd': '4', 'e': '5', 
-        'f': '6', 'g': '7', 'h': '8', 'i': '9', 'k': '0'
-    };
-    const grid = document.getElementById('learnGrid');
-    
-    // Tạo cấu trúc chuỗi 1 lần thay vì thao tác DOM liên tục
-    let htmlContent = "";
-    alphaList.forEach(char => {
-        const numberAssociated = numMap[char];
-        const displayLabel = numberAssociated ? `${char.toUpperCase()} - ${numberAssociated}` : char.toUpperCase();
-
-        htmlContent += `
-            <div class="bg-white p-2.5 md:p-4 rounded-lg md:rounded-xl text-center flex flex-col items-center gap-1.5 md:gap-3 shadow-lg">
-                <div class="text-sm md:text-xl font-black text-black uppercase tracking-wider">${displayLabel}</div>
-                <div class="w-full aspect-square max-w-[65px] md:max-w-[100px] flex items-center justify-center overflow-hidden">
-                    <img src="img_semaphore/${char}.png" 
-                         alt="${char.toUpperCase()}" 
-                         loading="lazy" 
-                         decoding="async"
-                         width="100" 
-                         height="100" 
-                         class="max-h-full max-w-full object-contain">
-                </div>
-            </div>
-        `;
+    document.addEventListener("DOMContentLoaded", () => {
+        const alphaList = "abcdefghijklmnopqrstuvwxyz".split("");
+        const numMap = { 'a': '1', 'b': '2', 'c': '3', 'd': '4', 'e': '5', 'f': '6', 'g': '7', 'h': '8', 'i': '9', 'k': '0' };
+        const container = document.getElementById('semaListGrid');
+        
+        let html = '';
+        alphaList.forEach(char => {
+            const num = numMap[char];
+            const label = num ? `${char.toUpperCase()} - ${num}` : char.toUpperCase();
+            html += `
+                <div class="bg-white p-2.5 md:p-4 rounded-lg md:rounded-xl text-center flex flex-col items-center gap-1.5 md:gap-3 shadow-lg">
+                    <div class="text-sm md:text-xl font-black text-black uppercase tracking-wider">${label}</div>
+                    <div class="w-full aspect-square max-w-[65px] md:max-w-[100px] flex items-center justify-center overflow-hidden">
+                        <img src="img_semaphore/${char}.png" alt="${char}" loading="lazy" decoding="async" width="80" height="80" class="max-h-full max-w-full object-contain">
+                    </div>
+                </div>`;
+        });
+        container.innerHTML = html;
     });
-    grid.innerHTML = htmlContent;
 </script>
                 </div>
             </div>
