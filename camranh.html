@@ -59,7 +59,6 @@
             font-weight: 900;
         }
     </style>
-    
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
 
@@ -133,18 +132,6 @@
                             <div class="text-center text-xs text-on-surface-variant font-mono-data py-4">- Hãy nhập khóa và văn bản để dựng ma trận -</div>
                         </div>
                     </div>
-
-                    <!-- KHỐI XUẤT HÀNG LOẠT TRƯỜNG HỢP CHỮ SINH RA -->
-                    <div class="glass-card flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <h2 class="font-label-md text-xs md:text-sm uppercase tracking-widest text-primary flex items-center gap-1.5 font-bold">
-                                <span class="material-symbols-outlined text-sm md:text-base">alt_route</span> CÁC TRƯỜNG HỢP CHỮ ĐẦU RA (TẤT CẢ QUY LUẬT)
-                            </h2>
-                        </div>
-                        <div class="flex flex-col gap-2" id="patternsOutput">
-                            <div class="text-center text-xs text-on-surface-variant font-mono-data py-2">- Chưa có dữ liệu ma trận -</div>
-                        </div>
-                    </div>
                 </section>
 
             </div>
@@ -175,7 +162,6 @@
         const inputKey = document.getElementById('inputKey');
         const inputText = document.getElementById('inputText');
         const tableGrid = document.getElementById('tableGrid');
-        const patternsOutput = document.getElementById('patternsOutput');
 
         const telexMap = { 'à':'a','á':'a','ả':'a','ã':'a','ạ':'a','ằ':'aw','ắ':'aw','ẳ':'aw','ẵ':'aw','ặ':'aw','ầ':'aa','ấ':'aa','ẩ':'aa','ẫ':'aa','ậ':'aa','è':'e','é':'e','ẻ':'e','ẽ':'e','ẹ':'e','ề':'ee','ế':'ee','ể':'ee','ễ':'ee','ệ':'ee','ì':'i','í':'i','ỉ':'i','ĩ':'i','ị':'i','ò':'o','ó':'o','ỏ':'o','õ':'o','ọ':'o','ồ':'oo','ố':'oo','ổ':'oo','ỗ':'oo','ộ':'oo','ờ':'ow','ớ':'ow','ở':'ow','ỡ':'ow','ợ':'ow','ù':'u','ú':'u','ủ':'u','ũ':'u','ụ':'u','ừ':'uw','ứ':'uw','ử':'uw','ữ':'uw','ự':'uw','ỳ':'y','ý':'y','ỷ':'y','ỹ':'y','ỵ':'y','đ':'dd','â':'aa','ă':'aw','ê':'ee','ô':'oo','ơ':'ow','ư':'uw' };
         const toneMap = { 'á':'s','à':'f','ả':'r','ã':'x','ạ':'j','ắ':'s','ằ':'f','ẳ':'r','ẵ':'x','ặ':'j','ấ':'s','ầ':'f','ẩ':'r','ẫ':'x','ậ':'j','é':'s','è':'f','ẻ':'r','ẽ':'x','ẹ':'j','ế':'s','ề':'f','ể':'r','ễ':'x','ệ':'j','í':'s','ì':'f','ỉ':'r','ĩ':'x','ị':'j','ó':'s','ò':'f','ỏ':'r','õ':'x','ọ':'j','ố':'s','ồ':'f','ổ':'r','ỗ':'x','ộ':'j','ớ':'s','ờ':'f','ở':'r','ỡ':'x','ợ':'j','ú':'s','ù':'f','ủ':'r','ũ':'x','ụ':'j','ứ':'s','ừ':'f','ử':'r','ữ':'x','ự':'j','ý':'s','ỳ':'f','ỷ':'r','ỹ':'x','ỵ':'j' };
@@ -195,70 +181,12 @@
             return result;
         }
 
-        function generatePatterns(matrix) {
-            const R = matrix.length;
-            if (R === 0) return [];
-            const C = matrix[0].length;
-            if (C === 0) return [];
-
-            let list = [];
-
-            let th1 = "";
-            for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) if (matrix[r][c]) th1 += matrix[r][c];
-            list.push({ title: "TH1: Trái ➔ Phải (Từ Trên ➔ Dưới)", text: th1 });
-
-            let th2 = "";
-            for (let r = 0; r < R; r++) for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th2 += matrix[r][c];
-            list.push({ title: "TH2: Phải ➔ Trái (Từ Trên ➔ Dưới)", text: th2 });
-
-            let th3 = "";
-            for (let r = 0; r < R; r++) {
-                if (r % 2 === 0) { for (let c = 0; c < C; c++) if (matrix[r][c]) th3 += matrix[r][c]; }
-                else { for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th3 += matrix[r][c]; }
-            }
-            list.push({ title: "TH3: Zigzag Ziczac (Trên ➔ Dưới: Trái-Phải / Phải-Trái)", text: th3 });
-
-            let th4 = "";
-            for (let r = 0; r < R; r++) {
-                if (r % 2 === 0) { for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th4 += matrix[r][c]; }
-                else { for (let c = 0; c < C; c++) if (matrix[r][c]) th4 += matrix[r][c]; }
-            }
-            list.push({ title: "TH4: Zigzag Ziczac Ngược (Trên ➔ Dưới: Phải-Trái / Trái-Phải)", text: th4 });
-
-            let th5 = "";
-            for (let r = R - 1; r >= 0; r--) for (let c = 0; c < C; c++) if (matrix[r][c]) th5 += matrix[r][c];
-            list.push({ title: "TH5: Trái ➔ Phải (Từ Dưới ➔ Trên)", text: th5 });
-
-            let th6 = "";
-            for (let r = R - 1; r >= 0; r--) for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th6 += matrix[r][c];
-            list.push({ title: "TH6: Phải ➔ Trái (Từ Dưới ➔ Trên)", text: th6 });
-
-            let th7 = "";
-            for (let i = 0; i < R; i++) {
-                let r = R - 1 - i;
-                if (i % 2 === 0) { for (let c = 0; c < C; c++) if (matrix[r][c]) th7 += matrix[r][c]; }
-                else { for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th7 += matrix[r][c]; }
-            }
-            list.push({ title: "TH7: Zigzag Ziczac (Dưới ➔ Trên: Trái-Phải / Phải-Trái)", text: th7 });
-
-            let th8 = "";
-            for (let i = 0; i < R; i++) {
-                let r = R - 1 - i;
-                if (i % 2 === 0) { for (let c = C - 1; c >= 0; c--) if (matrix[r][c]) th8 += matrix[r][c]; }
-                else { for (let c = 0; c < C; c++) if (matrix[r][c]) th8 += matrix[r][c]; }
-            }
-            list.push({ title: "TH8: Zigzag Ziczac Ngược (Dưới ➔ Trên: Phải-Trái / Trái-Phải)", text: th8 });
-
-            return list;
-        }
-
         function solve() {
             const rawKey = inputKey.value.trim();
             const rawText = inputText.value.trim();
             
             if (!rawKey || !rawText) { 
                 tableGrid.innerHTML = '<div class="text-center text-xs text-on-surface-variant font-mono-data py-4">- Hãy nhập khóa và văn bản để dựng ma trận -</div>'; 
-                patternsOutput.innerHTML = '<div class="text-center text-xs text-on-surface-variant font-mono-data py-2">- Chưa có dữ liệu ma trận -</div>';
                 return; 
             }
 
@@ -304,26 +232,6 @@
                     if (cell) cell.classList.toggle('cell-active');
                 };
             }
-
-            const patterns = generatePatterns(matrix);
-            let pHtml = "";
-            patterns.forEach((p, idx) => {
-                pHtml += `
-                    <div class="bg-black/30 border border-white/5 rounded-lg p-2 flex flex-col gap-1 hover:border-primary/30 transition-colors">
-                        <div class="text-[10px] font-bold text-primary tracking-wider uppercase flex items-center justify-between">
-                            <span class="truncate max-w-[80%]">${p.title}</span>
-                            <div class="flex items-center gap-1.5 flex-shrink-0">
-                                <span class="text-[9px] text-on-surface-variant font-mono-data">#${idx + 1}</span>
-                                <button class="btn-view-pattern px-2 py-0.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 rounded text-[9px] font-bold tracking-wider transition-all active:scale-95 flex items-center gap-1" data-title="${p.title}" data-text="${p.text || '-'}">
-                                    <span class="material-symbols-outlined text-[11px] pointer-events-none">visibility</span> XEM
-                                </button>
-                            </div>
-                        </div>
-                        <div class="p-1.5 bg-black/40 border border-white/5 rounded font-mono-data text-xs md:text-sm text-on-surface font-bold tracking-widest break-all select-all text-primary/90">${p.text || "-"}</div>
-                    </div>
-                `;
-            });
-            patternsOutput.innerHTML = pHtml;
         }
 
         inputKey.oninput = solve;
@@ -342,13 +250,6 @@
         document.getElementById('btnViewRaw').onclick = () => openModal("BẠCH VĂN GỐC", inputText.value);
         document.getElementById('btnClose').onclick = () => modal.classList.add('hidden');
         modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.add('hidden'); });
-
-        patternsOutput.addEventListener('click', (e) => {
-            const btn = e.target.closest('.btn-view-pattern');
-            if (btn) {
-                openModal(btn.getAttribute('data-title'), btn.getAttribute('data-text'));
-            }
-        });
 
         document.getElementById('btnClear').onclick = () => { inputText.value = ""; solve(); };
 
